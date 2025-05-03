@@ -1,12 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://dv5v3nnk4rt7b"]
+[gd_scene load_steps=3 format=3 uid="uid://b5jqg3l2nt8mm"]
 
-[ext_resource type="Script" uid="uid://be6x0kbd2a8hj" path="res://scripts/work/workphase.gd" id="1_pmhlo"]
+[ext_resource type="Script" uid="uid://brxj6vj83jfpq" path="res://scripts/intro/intro_scene.gd" id="1_ngq6t"]
 [ext_resource type="Texture2D" uid="uid://d3jaxn5bgxq67" path="res://art/boss_overtime1.png" id="2_00vdx"]
 
-[node name="WorkPhase_tscn" type="Control"]
+[node name="IntroScene" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_pmhlo")
+script = ExtResource("1_ngq6t")
 
 [node name="BossGif" type="TextureRect" parent="."]
 layout_mode = 0

@@ -8,7 +8,7 @@ const SHOP_SCENE := preload("res://scenes/shop/shop.tscn")
 const TREASURE_SCENE = preload("res://scenes/treasure/treasure.tscn")
 const WIN_SCREEN_SCENE := preload("res://scenes/win_screen/win_screen.tscn")
 const MAIN_MENU_PATH := "res://scenes/ui/main_menu.tscn"
-const WORK_PHASE_SCENE := preload("res://scenes/WorkPhase.tscn")
+const INTRO_SCENE := preload("res://scenes/IntroScene.tscn")
 const ALLEY_SCENE := preload("res://scenes/map/AlleyRow.tscn")
 
 @export var run_startup: RunStartup
@@ -58,8 +58,8 @@ func _start_run() -> void:
 	_setup_event_connections()
 	_setup_top_bar()
 	
-	var work_phase = _change_view(WORK_PHASE_SCENE)
-	work_phase.connect("proceed", Callable(self, "_on_work_phase_proceed"))
+	var intro_scene = _change_view(INTRO_SCENE)
+	intro_scene.connect("proceed", Callable(self, "_on_intro_scene_proceed"))
 	
 
 func _save_run(was_on_map: bool) -> void:
@@ -228,7 +228,7 @@ func _on_map_exited(room: Room) -> void:
 			_on_event_room_entered(room)
 
 
-func _on_work_phase_proceed() -> void:
+func _on_intro_scene_proceed() -> void:
 	# after boss overtime GIF, start map flow
 	alleys_visited = 0
 	_show_next_alley()
@@ -276,15 +276,17 @@ func _on_room_complete() -> void:
 	else:
 		# fallback: start new day
 		WorkDayManager.next_day()
-		var work_phase = _change_view(WORK_PHASE_SCENE)
-		work_phase.connect("proceed", Callable(self, "_on_work_phase_proceed"))
-
+		var intro_scene = _change_view(INTRO_SCENE)
+		intro_scene.connect("proceed", Callable(self, "_on_intro_scene_proceed"))
+		# restore campfire exit for alley loop
+		Events.campfire_exited.disconnect(_on_home_exited)
+		Events.campfire_exited.connect(_on_room_complete)
 
 func _on_home_exited() -> void:
 	# after resting at home, advance day and restart work phase
 	WorkDayManager.next_day()
-	var work_phase = _change_view(WORK_PHASE_SCENE)
-	work_phase.connect("proceed", Callable(self, "_on_work_phase_proceed"))
+	var intro_scene = _change_view(INTRO_SCENE)
+	intro_scene.connect("proceed", Callable(self, "_on_intro_scene_proceed"))
 	# restore campfire exit for alley loop
 	Events.campfire_exited.disconnect(_on_home_exited)
 	Events.campfire_exited.connect(_on_room_complete)
