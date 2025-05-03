@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=4 format=3 uid="uid://dfx0681jji3ye"]
+
+[ext_resource type="Texture2D" uid="uid://cn5ay52fatdrf" path="res://art/strike_select.png" id="1_1w0y2"]
+[ext_resource type="Script" uid="uid://cq5mmgv1o07pu" path="res://characters/streak/cards/streak_echo_step.gd" id="2_scr"]
+[ext_resource type="AudioStream" uid="uid://df64e7qat73gs" path="res://art/block.ogg" id="3_sfx"]
+
+[resource]
+script = ExtResource("2_scr")
+id = "streak_echo_step"
+type = 1
+rarity = 0
+target = 0
+cost = 0
+exhausts = false
+icon = ExtResource("1_1w0y2")
+tooltip_text = "[center]Gain [color=\"0044ff\"]%s[/color] Block. Next card costs 1 less this turn.[/center]"
+sound = ExtResource("3_sfx")

@@ -1,13 +1,27 @@
-[gd_resource type="Resource" script_class="CardPile" load_steps=8 format=3 uid="uid://dyyfi3rcfxyug"]
+[gd_resource type="Resource" script_class="CardPile" load_steps=11 format=3 uid="uid://dyyfi3rcfxyug"]
 
 [ext_resource type="Script" uid="uid://bf1x566n7ghum" path="res://custom_resources/card_pile.gd" id="1_ncslu"]
 [ext_resource type="Script" uid="uid://dak1pde8po1pa" path="res://custom_resources/card.gd" id="1_tnkis"]
-[ext_resource type="Resource" uid="uid://btxc1odh1jmst" path="res://characters/streak/cards/streak_axe_attack.tres" id="1_vcw61"]
-[ext_resource type="Resource" uid="uid://d4c8yfl4f4sat" path="res://characters/streak/cards/streak_block.tres" id="2_1cndr"]
 [ext_resource type="Resource" uid="uid://n3va254ct6b3" path="res://characters/streak/cards/streak_slash.tres" id="2_svnpp"]
-[ext_resource type="Resource" uid="uid://d20gx8xpmgpdi" path="res://characters/streak/cards/streak_big_slam.tres" id="4_u4di5"]
+[ext_resource type="Resource" uid="uid://bax62hfqurpiy" path="res://characters/streak/cards/streak_quick_strike.tres" id="3_qstr"]
 [ext_resource type="Resource" uid="uid://c8g8a5tx1sr2p" path="res://characters/streak/cards/streak_true_strength.tres" id="5_ufvqk"]
+[ext_resource type="Resource" uid="uid://cy1qi7r1ua7xf" path="res://characters/streak/cards/streak_phase_shift.tres" id="6_phase"]
+[ext_resource type="Texture2D" uid="uid://cn5ay52fatdrf" path="res://art/strike_select.png" id="6_rttfb"]
+[ext_resource type="Script" uid="uid://ccjfmdkdvqol8" path="res://characters/streak/cards/streak_chain_dash.gd" id="7_x3qx6"]
+[ext_resource type="AudioStream" uid="uid://dixklg6g4jnsq" path="res://art/slash.ogg" id="8_8g674"]
+
+[sub_resource type="Resource" id="Resource_1wdut"]
+script = ExtResource("7_x3qx6")
+id = "streak_chain_dash"
+type = 0
+rarity = 0
+target = 1
+cost = 1
+exhausts = false
+icon = ExtResource("6_rttfb")
+tooltip_text = "[center]Deal [color=\"ff0000\"]%s[/color] damage [color=\"0044ff\"]%s[/color] times to a single enemy.[/center]"
+sound = ExtResource("8_8g674")
 
 [resource]
 script = ExtResource("1_ncslu")
-cards = Array[ExtResource("1_tnkis")]([ExtResource("1_vcw61"), ExtResource("1_vcw61"), ExtResource("1_vcw61"), ExtResource("2_svnpp"), ExtResource("2_svnpp"), ExtResource("2_1cndr"), ExtResource("2_1cndr"), ExtResource("2_1cndr"), ExtResource("5_ufvqk"), ExtResource("4_u4di5")])
+cards = Array[ExtResource("1_tnkis")]([ExtResource("6_phase"), ExtResource("6_phase"), ExtResource("6_phase"), ExtResource("6_phase"), ExtResource("2_svnpp"), ExtResource("5_ufvqk"), ExtResource("3_qstr"), SubResource("Resource_1wdut"), ExtResource("6_phase")])

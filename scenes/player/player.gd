@@ -41,6 +41,8 @@ func update_stats() -> void:
 func take_damage(damage: int, which_modifier: Modifier.Type) -> void:
 	if stats.health <= 0:
 		return
+	if status_handler._has_status("intangible"):
+		damage = 1
 	
 	sprite_2d.material = WHITE_SPRITE_MATERIAL
 	var modified_damage := modifier_handler.get_modified_value(damage, which_modifier)

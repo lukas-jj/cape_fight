@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Card" load_steps=3 format=3 uid="uid://c5rlbyxeya7e4"]
+
+[ext_resource type="Texture2D" uid="uid://bxrqy2bd0pbwr" path="res://art/streak_select.png" id="1_qphkc"]
+[ext_resource type="Script" uid="uid://dak1pde8po1pa" path="res://custom_resources/card.gd" id="2_1sgvw"]
+
+[resource]
+script = ExtResource("2_1sgvw")
+id = "streak_echo_step.tres"
+type = 1
+rarity = 0
+target = 0
+cost = 0
+exhausts = false
+icon = ExtResource("1_qphkc")
+tooltip_text = ""
+metadata/_custom_type_script = "uid://dak1pde8po1pa"

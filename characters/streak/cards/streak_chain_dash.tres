@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=4 format=3 uid="uid://c4qv1bvknq2k"]
+
+[ext_resource type="Texture2D" uid="uid://cn5ay52fatdrf" path="res://art/strike_select.png" id="1_tex"]
+[ext_resource type="Script" uid="uid://ccjfmdkdvqol8" path="res://characters/streak/cards/streak_chain_dash.gd" id="2_scr"]
+[ext_resource type="AudioStream" uid="uid://dixklg6g4jnsq" path="res://art/slash.ogg" id="3_sfx"]
+
+[resource]
+script = ExtResource("2_scr")
+id = "streak_chain_dash"
+type = 0
+rarity = 0
+target = 1
+cost = 1
+exhausts = false
+icon = ExtResource("1_tex")
+tooltip_text = "[center]Deal [color=\"ff0000\"]%s[/color] damage [color=\"0044ff\"]%s[/color] times to a single enemy.[/center]"
+sound = ExtResource("3_sfx")
