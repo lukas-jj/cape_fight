@@ -12,3 +12,12 @@ export_presets.cfg
 # Mono-specific ignores
 .mono/
 data_*/
+
+# Godot import/cache
+.import/
+.godot/imported/
+*.import
+*.ctex
+
+# macOS cruft
+.DS_Store
