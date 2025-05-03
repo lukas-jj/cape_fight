@@ -1,19 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://dfrdaou640irp"]
+[gd_scene load_steps=14 format=3 uid="uid://dfrdaou640irp"]
 
-[ext_resource type="Script" path="res://scenes/campfire/campfire.gd" id="1_i8fph"]
+[ext_resource type="Script" uid="uid://dd603pd0xxki6" path="res://scenes/campfire/campfire.gd" id="1_i8fph"]
 [ext_resource type="Resource" uid="uid://sbkc4o401k4l" path="res://characters/warrior/warrior.tres" id="2_0gfpy"]
-[ext_resource type="Texture2D" uid="uid://djbldcvfo4swr" path="res://art/line.png" id="2_ykw02"]
-
-[sub_resource type="Gradient" id="Gradient_lx464"]
-offsets = PackedFloat32Array(0.2125, 1)
-colors = PackedColorArray(0.0291667, 0.0291667, 0.0291667, 1, 0.258824, 0.145098, 0.133333, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_6orn2"]
-gradient = SubResource("Gradient_lx464")
-fill_from = Vector2(0.5, 0)
-fill_to = Vector2(0.5, 1)
-metadata/_snap_enabled = true
-metadata/_snap_count = 8
+[ext_resource type="Texture2D" uid="uid://bb3rcs5nqntir" path="res://art/arrow.png" id="3_civeq"]
+[ext_resource type="Texture2D" uid="uid://boat3vpksbgq8" path="res://art/imahomege.png" id="3_vcaur"]
 
 [sub_resource type="Gradient" id="Gradient_weiba"]
 offsets = PackedFloat32Array(0, 0.225962, 0.509615, 0.865385, 1)
@@ -120,8 +110,8 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ikhwv"]
 _data = {
-"RESET": SubResource("Animation_em2db"),
-"fade_out": SubResource("Animation_wekwb")
+&"RESET": SubResource("Animation_em2db"),
+&"fade_out": SubResource("Animation_wekwb")
 }
 
 [node name="Campfire" type="Control"]
@@ -135,25 +125,14 @@ mouse_filter = 2
 script = ExtResource("1_i8fph")
 char_stats = ExtResource("2_0gfpy")
 
-[node name="BackgroundLayer" type="CanvasLayer" parent="."]
-layer = 0
-
-[node name="Background" type="TextureRect" parent="BackgroundLayer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = SubResource("GradientTexture2D_6orn2")
-
 [node name="ParticlesLayer" type="CanvasLayer" parent="."]
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="ParticlesLayer"]
-position = Vector2(90, 100)
-amount = 128
+position = Vector2(63, 76)
+emitting = false
+amount = 1
+texture = ExtResource("3_civeq")
 process_material = SubResource("ParticleProcessMaterial_1jtqt")
-texture = ExtResource("2_ykw02")
-lifetime = 1.5
 
 [node name="UILayer" type="CanvasLayer" parent="."]
 
@@ -193,7 +172,12 @@ horizontal_alignment = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_ikhwv")
+&"": SubResource("AnimationLibrary_ikhwv")
 }
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(129, 72)
+scale = Vector2(0.24873, 0.137402)
+texture = ExtResource("3_vcaur")
 
 [connection signal="pressed" from="UILayer/UI/RestButton" to="." method="_on_rest_button_pressed"]

@@ -10,7 +10,7 @@ const SAVE_PATH := "user://savegame.tres"
 @export var current_deck: CardPile
 @export var current_health: int
 @export var relics: Array[Relic]
-@export var map_data: Array[Array]
+@export var map_data: Array
 @export var last_room: Room
 @export var floors_climbed: int
 @export var was_on_map: bool

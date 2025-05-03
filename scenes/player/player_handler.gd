@@ -75,10 +75,7 @@ func discard_cards() -> void:
 		tween.tween_callback(hand.discard_card.bind(card_ui))
 		tween.tween_interval(HAND_DISCARD_INTERVAL)
 	
-	tween.finished.connect(
-		func():
-			Events.player_hand_discarded.emit()
-	)
+	tween.finished.connect(func(): Events.player_hand_discarded.emit())
 
 
 func reshuffle_deck_from_discard() -> void:

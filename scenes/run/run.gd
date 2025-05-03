@@ -8,6 +8,8 @@ const SHOP_SCENE := preload("res://scenes/shop/shop.tscn")
 const TREASURE_SCENE = preload("res://scenes/treasure/treasure.tscn")
 const WIN_SCREEN_SCENE := preload("res://scenes/win_screen/win_screen.tscn")
 const MAIN_MENU_PATH := "res://scenes/ui/main_menu.tscn"
+const WORK_PHASE_SCENE := preload("res://scenes/WorkPhase.tscn")
+const ALLEY_SCENE := preload("res://scenes/map/AlleyRow.tscn")
 
 @export var run_startup: RunStartup
 
@@ -31,14 +33,14 @@ const MAIN_MENU_PATH := "res://scenes/ui/main_menu.tscn"
 var stats: RunStats
 var character: CharacterStats
 var save_data: SaveGame
-
+var alleys_visited: int = 0
 
 func _ready() -> void:
 	if not run_startup:
 		return
 	
 	pause_menu.save_and_quit.connect(
-		func(): 
+		func():
 			get_tree().change_scene_to_file(MAIN_MENU_PATH)
 	)
 	
@@ -56,12 +58,9 @@ func _start_run() -> void:
 	_setup_event_connections()
 	_setup_top_bar()
 	
-	map.generate_new_map()
-	map.unlock_floor(0)
+	var work_phase = _change_view(WORK_PHASE_SCENE)
+	work_phase.connect("proceed", Callable(self, "_on_work_phase_proceed"))
 	
-	save_data = SaveGame.new()
-	_save_run(true)
-
 
 func _save_run(was_on_map: bool) -> void:
 	save_data.rng_seed = RNG.instance.seed
@@ -113,19 +112,19 @@ func _show_map() -> void:
 		current_view.get_child(0).queue_free()
 
 	map.show_map()
-	map.unlock_next_rooms()
+	#map.unlock_floor()
 	
 	_save_run(true)
 
 
 func _setup_event_connections() -> void:
 	Events.battle_won.connect(_on_battle_won)
-	Events.battle_reward_exited.connect(_show_map)
-	Events.campfire_exited.connect(_show_map)
+	Events.battle_reward_exited.connect(_on_room_complete)
+	Events.campfire_exited.connect(_on_room_complete)
 	Events.map_exited.connect(_on_map_exited)
-	Events.shop_exited.connect(_show_map)
+	Events.shop_exited.connect(_on_room_complete)
 	Events.treasure_room_exited.connect(_on_treasure_room_exited)
-	Events.event_room_exited.connect(_show_map)
+	Events.event_room_exited.connect(_on_room_complete)
 	
 	battle_button.pressed.connect(_change_view.bind(BATTLE_SCENE))
 	campfire_button.pressed.connect(_change_view.bind(CAMPFIRE_SCENE))
@@ -213,7 +212,7 @@ func _on_battle_won() -> void:
 
 func _on_map_exited(room: Room) -> void:
 	_save_run(false)
-	
+	map.last_room = room  # ensure last_room isn’t Nil for reward lookup
 	match room.type:
 		Room.Type.MONSTER:
 			_on_battle_room_entered(room)
@@ -227,3 +226,65 @@ func _on_map_exited(room: Room) -> void:
 			_on_battle_room_entered(room)
 		Room.Type.EVENT:
 			_on_event_room_entered(room)
+
+
+func _on_work_phase_proceed() -> void:
+	# after boss overtime GIF, start map flow
+	alleys_visited = 0
+	_show_next_alley()
+	map.show_map()
+
+
+func _show_next_alley() -> void:
+	var alley = _change_view(ALLEY_SCENE)
+	alley.connect("alley_chosen", Callable(self, "_on_alley_chosen"))
+	alley.setup(WorkDayManager.generate_alley_choices())
+	map.show_map()
+
+
+func _on_alley_chosen(room: Room) -> void:
+	alleys_visited += 1
+	map.last_room = room
+	match room.type:
+		Room.Type.MONSTER:
+			_on_battle_room_entered(room)
+		Room.Type.TREASURE:
+			_on_treasure_room_entered()
+		Room.Type.CAMPFIRE:
+			_on_campfire_entered()
+		Room.Type.SHOP:
+			_on_shop_entered()
+		Room.Type.EVENT:
+			_on_event_room_entered(room)
+
+func _on_room_complete() -> void:
+	if alleys_visited < 3:
+		_show_next_alley()
+	elif alleys_visited == 3:
+		# final alley complete → go home
+		var home_scene = _change_view(CAMPFIRE_SCENE)
+		# override home background
+		var bg_sprite = home_scene.get_node("Sprite2D") as Sprite2D
+		bg_sprite.texture = preload("res://art/imahomege.png")
+		# relabel title to Home
+		var title_label = home_scene.get_node("UILayer/UI/Title")
+		title_label.text = "Home"
+		home_scene.char_stats = character
+		# reroute campfire exit to home handler
+		Events.campfire_exited.disconnect(_on_room_complete)
+		Events.campfire_exited.connect(_on_home_exited)
+	else:
+		# fallback: start new day
+		WorkDayManager.next_day()
+		var work_phase = _change_view(WORK_PHASE_SCENE)
+		work_phase.connect("proceed", Callable(self, "_on_work_phase_proceed"))
+
+
+func _on_home_exited() -> void:
+	# after resting at home, advance day and restart work phase
+	WorkDayManager.next_day()
+	var work_phase = _change_view(WORK_PHASE_SCENE)
+	work_phase.connect("proceed", Callable(self, "_on_work_phase_proceed"))
+	# restore campfire exit for alley loop
+	Events.campfire_exited.disconnect(_on_home_exited)
+	Events.campfire_exited.connect(_on_room_complete)

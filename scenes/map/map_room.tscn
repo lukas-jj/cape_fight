@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://dqvt1s82wu8pu"]
+[gd_scene load_steps=7 format=3 uid="uid://dqvt1s82wu8pu"]
 
-[ext_resource type="Script" path="res://scenes/map/map_room.gd" id="1_1rfj3"]
-[ext_resource type="Texture2D" uid="uid://bfvi02kojsa00" path="res://art/tile_0103.png" id="1_hme85"]
+[ext_resource type="Script" uid="uid://bhg4jss2b2gdo" path="res://scenes/map/map_room.gd" id="1_1rfj3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_auf4t"]
 
@@ -80,9 +79,9 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5oev0"]
 _data = {
-"RESET": SubResource("Animation_foqjf"),
-"highlight": SubResource("Animation_rwbam"),
-"select": SubResource("Animation_kidfm")
+&"RESET": SubResource("Animation_foqjf"),
+&"highlight": SubResource("Animation_rwbam"),
+&"select": SubResource("Animation_kidfm")
 }
 
 [node name="MapRoom" type="Area2D"]
@@ -100,14 +99,13 @@ width = 2.0
 default_color = Color(0.529412, 0.529412, 0.529412, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="Visuals"]
-texture = ExtResource("1_hme85")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_auf4t")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_5oev0")
+&"": SubResource("AnimationLibrary_5oev0")
 }
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]

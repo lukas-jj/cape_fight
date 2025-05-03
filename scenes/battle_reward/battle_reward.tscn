@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://b6b781nbyeuds"]
 
-[ext_resource type="Script" path="res://scenes/battle_reward/battle_reward.gd" id="1_q1rg4"]
-[ext_resource type="Texture2D" uid="uid://cp4iq5fd6j8be" path="res://art/background.png" id="2_ymhpx"]
+[ext_resource type="Script" uid="uid://bigi02kouf8uu" path="res://scenes/battle_reward/battle_reward.gd" id="1_q1rg4"]
+[ext_resource type="Texture2D" uid="uid://c25yypxnyqkcq" path="res://art/background art game.png" id="2_ut71s"]
 [ext_resource type="PackedScene" uid="uid://dh6d1t3b0006b" path="res://scenes/ui/reward_button.tscn" id="3_1u6of"]
 [ext_resource type="Texture2D" uid="uid://dhmtctwb5ymhc" path="res://art/gold.png" id="4_pr1pa"]
 [ext_resource type="Texture2D" uid="uid://du7r7v1iaahuo" path="res://art/rarity.png" id="5_lc0i4"]
@@ -29,7 +29,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_ymhpx")
+texture = ExtResource("2_ut71s")
 expand_mode = 1
 stretch_mode = 5
 
@@ -41,7 +41,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0, 0, 0, 0.784314)
+color = Color(0.153077, 0.153077, 0.153077, 0.784314)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1

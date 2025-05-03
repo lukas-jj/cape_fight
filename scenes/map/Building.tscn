@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://iu32wyijax1u"]
+
+[ext_resource type="Texture2D" uid="uid://beg23lhfn2x0k" path="res://assets/skyscraper.png" id="1_3shp7"]
+
+[node name="Buildings" type="Sprite2D"]
+position = Vector2(44, 43)
+scale = Vector2(0.0859375, 0.0559896)
+texture = ExtResource("1_3shp7")

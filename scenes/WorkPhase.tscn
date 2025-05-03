@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwku3f33ae2j2"]
+
+[ext_resource type="Script" uid="uid://be6x0kbd2a8hj" path="res://scripts/work/workphase.gd" id="1_pmhlo"]
+[ext_resource type="Texture2D" uid="uid://d3jaxn5bgxq67" path="res://art/boss_overtime1.png" id="2_00vdx"]
+
+[node name="WorkPhase_tscn" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_pmhlo")
+
+[node name="BossGif" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -61.0
+offset_top = 6.0
+offset_right = 235.0
+offset_bottom = 140.0
+scale = Vector2(1.28, 1.04)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("2_00vdx")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ContinueButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 227.0
+offset_top = 116.0
+offset_right = 253.0
+offset_bottom = 136.0
+theme_override_font_sizes/font_size = 10
+text = "Ok
+"

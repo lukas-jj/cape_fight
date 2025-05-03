@@ -1,10 +1,11 @@
-[gd_resource type="Resource" load_steps=3 format=3 uid="uid://cy5rtyb7a4hpp"]
+[gd_resource type="Resource" script_class="CouponsRelic" load_steps=3 format=3 uid="uid://cy5rtyb7a4hpp"]
 
 [ext_resource type="Texture2D" uid="uid://cjclq485fhfjv" path="res://art/coupons.png" id="1_xmg3w"]
-[ext_resource type="Script" path="res://relics/coupons.gd" id="2_0p0pg"]
+[ext_resource type="Script" uid="uid://shmaay10dhfk" path="res://relics/coupons.gd" id="2_0p0pg"]
 
 [resource]
 script = ExtResource("2_0p0pg")
+discount = 50
 relic_name = "Coupons"
 id = "coupons"
 type = 4

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" load_steps=3 format=3 uid="uid://dgsppvwlatlhw"]
 
 [ext_resource type="Texture2D" uid="uid://boklhiqs1414d" path="res://art/tile_0115.png" id="1_xg7m0"]
-[ext_resource type="Script" path="res://relics/healing_potion.gd" id="2_yauxr"]
+[ext_resource type="Script" uid="uid://jtk6cyo6jquw" path="res://relics/healing_potion.gd" id="2_yauxr"]
 
 [resource]
 script = ExtResource("2_yauxr")
