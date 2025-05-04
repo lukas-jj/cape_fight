@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CardPile" load_steps=8 format=3 uid="uid://c2q1b3cq58vnl"]
+
+[ext_resource type="Script" uid="uid://dak1pde8po1pa" path="res://custom_resources/card.gd" id="1_nw8p0"]
+[ext_resource type="Resource" uid="uid://bcmktyqt2d7cm" path="res://characters/warrior/cards/warrior_angry_anvil.tres" id="2_h8n4u"]
+[ext_resource type="Resource" uid="uid://btxc1odh1jmst" path="res://characters/warrior/cards/warrior_axe_attack.tres" id="3_b0dro"]
+[ext_resource type="Resource" uid="uid://d20gx8xpmgpdi" path="res://characters/warrior/cards/warrior_big_slam.tres" id="4_gx5iw"]
+[ext_resource type="Resource" uid="uid://d4c8yfl4f4sat" path="res://characters/warrior/cards/warrior_block.tres" id="5_v2b8e"]
+[ext_resource type="Resource" uid="uid://cedsow628sq3y" path="res://characters/warrior/cards/warrior_sharp_knife.tres" id="6_07r06"]
+[ext_resource type="Script" uid="uid://bf1x566n7ghum" path="res://custom_resources/card_pile.gd" id="7_5asx6"]
+
+[resource]
+script = ExtResource("7_5asx6")
+cards = Array[ExtResource("1_nw8p0")]([ExtResource("2_h8n4u"), ExtResource("3_b0dro"), ExtResource("4_gx5iw"), ExtResource("5_v2b8e"), ExtResource("6_07r06")])
