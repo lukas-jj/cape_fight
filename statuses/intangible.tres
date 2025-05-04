@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_scr")
 id = "intangible"
-type = 2
+type = 0
 stack_type = 0
 can_expire = true
 duration = 0

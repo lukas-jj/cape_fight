@@ -40,6 +40,16 @@ func generate_alley_choices() -> Array:
 	battle_stats_pool.setup()
 	randomize()
 	var choices = []
+	# first encounter always monster
+	if day == 1:
+		for i in range(3):
+			var alley_type = randi() % 2
+			var room = Room.new()
+			room.type = Room.Type.MONSTER
+			var tier = min(threat_level, battle_stats_pool.pool.size() - 1)
+			room.battle_stats = battle_stats_pool.get_random_battle_for_tier(tier)
+			choices.append({"room": room, "alley_type": alley_type})
+		return choices
 	for i in range(3):
 		var alley_type = randi() % 2
 		var room_type = pick_room_type_by_alley(alley_type)

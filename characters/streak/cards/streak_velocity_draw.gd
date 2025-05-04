@@ -1,22 +1,15 @@
 extends Card
 
-var base_block := 2
-
+var cards_to_draw := 2
 
 func get_default_tooltip() -> String:
-	return tooltip_text % base_block
-
+	return tooltip_text % [cards_to_draw]
 
 func get_updated_tooltip(_player_modifiers: ModifierHandler, _enemy_modifiers: ModifierHandler) -> String:
-	return tooltip_text % base_block
-
+	return tooltip_text % [cards_to_draw]
 
 func apply_effects(targets: Array[Node], _modifiers: ModifierHandler) -> void:
-	var block_effect := BlockEffect.new()
-	block_effect.amount = base_block
-	block_effect.sound = sound
-	block_effect.execute(targets)
-
 	var card_draw_effect := CardDrawEffect.new()
-	card_draw_effect.cards_to_draw = 1
+	card_draw_effect.cards_to_draw = cards_to_draw
+	card_draw_effect.sound = sound
 	card_draw_effect.execute(targets)

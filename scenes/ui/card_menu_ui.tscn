@@ -1,8 +1,49 @@
-[gd_scene load_steps=4 format=3 uid="uid://trmdo65td4t7"]
+[gd_scene load_steps=8 format=3 uid="uid://trmdo65td4t7"]
 
 [ext_resource type="Script" uid="uid://eoyf5nf3ujow" path="res://scenes/ui/card_menu_ui.gd" id="1_0f0jo"]
 [ext_resource type="Resource" uid="uid://d4c8yfl4f4sat" path="res://characters/warrior/cards/warrior_block.tres" id="2_1ngm1"]
 [ext_resource type="PackedScene" uid="uid://b362c35jf6fmy" path="res://scenes/ui/card_visuals.tscn" id="3_vpo1j"]
+[ext_resource type="Texture2D" uid="uid://cqcal03735mv8" path="res://art/tile_0118.png" id="4_1as8l"]
+[ext_resource type="AudioStream" uid="uid://dixklg6g4jnsq" path="res://art/slash.ogg" id="5_lcbw5"]
+
+[sub_resource type="GDScript" id="GDScript_wcoov"]
+script/source = "extends Card
+
+var base_damage := 4
+
+
+func get_default_tooltip() -> String:
+	return tooltip_text % base_damage
+
+
+func get_updated_tooltip(player_modifiers: ModifierHandler, enemy_modifiers: ModifierHandler) -> String:
+	var modified_dmg := player_modifiers.get_modified_value(base_damage, Modifier.Type.DMG_DEALT)
+
+	if enemy_modifiers:
+		modified_dmg = enemy_modifiers.get_modified_value(modified_dmg, Modifier.Type.DMG_TAKEN)
+		
+	return tooltip_text % modified_dmg
+
+
+func apply_effects(targets: Array[Node], modifiers: ModifierHandler) -> void:
+	var damage_effect := DamageEffect.new()
+	damage_effect.amount = modifiers.get_modified_value(base_damage, Modifier.Type.DMG_DEALT)
+	damage_effect.sound = sound
+	damage_effect.execute(targets)
+"
+
+[sub_resource type="Resource" id="Resource_0nfo2"]
+script = SubResource("GDScript_wcoov")
+id = "streak_slash"
+type = 0
+rarity = 0
+target = 2
+cost = 2
+exhausts = false
+icon = ExtResource("4_1as8l")
+tooltip_text = "[center]Deal [color=\"ff0000\"]%s[/color] damage
+to all enemies.[/center]"
+sound = ExtResource("5_lcbw5")
 
 [node name="CardMenuUI" type="CenterContainer"]
 offset_right = 25.0
@@ -13,6 +54,7 @@ card = ExtResource("2_1ngm1")
 
 [node name="Visuals" parent="." instance=ExtResource("3_vpo1j")]
 layout_mode = 2
+card = SubResource("Resource_0nfo2")
 
 [connection signal="gui_input" from="Visuals" to="." method="_on_visuals_gui_input"]
 [connection signal="mouse_entered" from="Visuals" to="." method="_on_visuals_mouse_entered"]

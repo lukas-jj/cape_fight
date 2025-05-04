@@ -1,12 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://dv5v3nnk4rt7b"]
+[gd_scene load_steps=2 format=3 uid="uid://dv5v3nnk4rt7b"]
 
-[ext_resource type="Script" uid="uid://be6x0kbd2a8hj" path="res://scripts/work/workphase.gd" id="1_pmhlo"]
-[ext_resource type="Texture2D" uid="uid://d3jaxn5bgxq67" path="res://art/boss_overtime1.png" id="2_00vdx"]
+[ext_resource type="Texture2D" uid="uid://chs5m1dcc3v58" path="res://art/goodvibe.png" id="1_pmhlo"]
 
 [node name="WorkPhase_tscn" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_pmhlo")
 
 [node name="BossGif" type="TextureRect" parent="."]
 layout_mode = 0
@@ -17,7 +15,7 @@ offset_bottom = 140.0
 scale = Vector2(1.28, 1.04)
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("2_00vdx")
+texture = ExtResource("1_pmhlo")
 expand_mode = 1
 stretch_mode = 5
 

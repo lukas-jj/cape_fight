@@ -58,7 +58,9 @@ func _start_run() -> void:
 	_setup_event_connections()
 	_setup_top_bar()
 	
-	var intro_scene = _change_view(INTRO_SCENE)
+	# show a custom intro scene per character if set, otherwise use boss intro
+	var scene_to_show = character.intro_scene if character.intro_scene else INTRO_SCENE
+	var intro_scene = _change_view(scene_to_show)
 	intro_scene.connect("proceed", Callable(self, "_on_intro_scene_proceed"))
 	
 
@@ -276,7 +278,8 @@ func _on_room_complete() -> void:
 	else:
 		# fallback: start new day
 		WorkDayManager.next_day()
-		var intro_scene = _change_view(INTRO_SCENE)
+		var scene_to_show = character.intro_scene if character.intro_scene else INTRO_SCENE
+		var intro_scene = _change_view(scene_to_show)
 		intro_scene.connect("proceed", Callable(self, "_on_intro_scene_proceed"))
 		# restore campfire exit for alley loop
 		Events.campfire_exited.disconnect(_on_home_exited)
@@ -285,7 +288,8 @@ func _on_room_complete() -> void:
 func _on_home_exited() -> void:
 	# after resting at home, advance day and restart work phase
 	WorkDayManager.next_day()
-	var intro_scene = _change_view(INTRO_SCENE)
+	var scene_to_show = character.intro_scene if character.intro_scene else INTRO_SCENE
+	var intro_scene = _change_view(scene_to_show)
 	intro_scene.connect("proceed", Callable(self, "_on_intro_scene_proceed"))
 	# restore campfire exit for alley loop
 	Events.campfire_exited.disconnect(_on_home_exited)
