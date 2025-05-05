@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Card" load_steps=2 format=3 uid="uid://b4wp05vqc8pgx"]
+
+[ext_resource type="Script" uid="uid://dak1pde8po1pa" path="res://custom_resources/card.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "streak_blink"
+type = 1
+rarity = 0
+target = 0
+cost = 0
+exhausts = false
+tooltip_text = "[center]Gain [color=\"0044ff\"]3[/color] block. Next attack deals +3 damage.[/center]"

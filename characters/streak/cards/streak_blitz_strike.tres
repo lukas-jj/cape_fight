@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Card" load_steps=2 format=3 uid="uid://bb5dvluxhwt6j"]
+
+[ext_resource type="Script" uid="uid://dak1pde8po1pa" path="res://custom_resources/card.gd" id="1_card"]
+
+[resource]
+script = ExtResource("1_card")
+id = "streak_blitz_strike"
+type = 0
+rarity = 0
+target = 0
+cost = 0
+exhausts = false
+tooltip_text = "[center]Deal [color=\"ff0000\"]8[/color] damage. Next card costs 1 less this turn.[/center]"

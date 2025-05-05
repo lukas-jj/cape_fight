@@ -96,11 +96,17 @@ func _modify_weights(rarity_rolled: Card.Rarity) -> void:
 
 
 func _get_random_available_card(available_cards: Array[Card], with_rarity: Card.Rarity) -> Card:
-	var all_possible_cards := available_cards.filter(
+	var pool := available_cards.filter(
 		func(card: Card):
 			return card.rarity == with_rarity
 	)
-	return RNG.array_pick_random(all_possible_cards)
+	# Fallback: if no card of that rarity exists, allow any card.
+	if pool.is_empty():
+		pool = available_cards.duplicate()
+	# Final safeguard – if still empty, return null explicitly.
+	if pool.is_empty():
+		return null
+	return RNG.array_pick_random(pool)
 
 
 func _on_gold_reward_taken(amount: int) -> void:
