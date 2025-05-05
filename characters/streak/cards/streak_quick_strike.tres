@@ -10,7 +10,7 @@ id = "streak_quick_strike"
 type = 0
 rarity = 0
 target = 2
-cost = 0
+cost = 1
 exhausts = false
 icon = ExtResource("1_2bmij")
 tooltip_text = "[center]Deal [color=\"ff0000\"]%s[/color] damage and draw [color=\"0044ff\"]%s[/color] card.[/center]"

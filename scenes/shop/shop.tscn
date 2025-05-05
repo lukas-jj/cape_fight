@@ -109,7 +109,7 @@ stretch_mode = 5
 [node name="ShopkeeperAnimation" type="AnimationPlayer" parent="DecorationLayer"]
 unique_name_in_owner = true
 libraries = {
-"": SubResource("AnimationLibrary_c4845")
+&"": SubResource("AnimationLibrary_c4845")
 }
 
 [node name="BlinkTimer" type="Timer" parent="DecorationLayer"]

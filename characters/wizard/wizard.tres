@@ -6,8 +6,8 @@
 
 [resource]
 script = ExtResource("1_6upmd")
-character_name = "Catticus"
-description = "Such a sneaky little cat."
+character_name = "Hunter"
+description = "Watches from the shadows."
 portrait = ExtResource("1_ihxtb")
 starting_deck = ExtResource("3_d6so0")
 draftable_cards = ExtResource("3_d6so0")

@@ -70,7 +70,10 @@ func update_enemy() -> void:
 		await ready
 	
 	sprite_2d.texture = stats.art
-	arrow.position = Vector2.RIGHT * (sprite_2d.get_rect().size.x / 2 + ARROW_OFFSET)
+	# apply per-enemy scale
+	var uniform_scale = Vector2.ONE * stats.scale_percent
+	sprite_2d.scale = uniform_scale
+	arrow.position = Vector2.RIGHT * (sprite_2d.get_rect().size.x * stats.scale_percent / 2 + ARROW_OFFSET)
 	setup_ai()
 	update_stats()
 

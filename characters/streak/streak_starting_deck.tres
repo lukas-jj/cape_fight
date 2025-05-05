@@ -1,12 +1,11 @@
-[gd_resource type="Resource" script_class="CardPile" load_steps=7 format=3 uid="uid://dyyfi3rcfxyug"]
+[gd_resource type="Resource" script_class="CardPile" load_steps=6 format=3 uid="uid://dyyfi3rcfxyug"]
 
 [ext_resource type="Script" uid="uid://bf1x566n7ghum" path="res://custom_resources/card_pile.gd" id="1_ncslu"]
 [ext_resource type="Script" uid="uid://dak1pde8po1pa" path="res://custom_resources/card.gd" id="1_tnkis"]
 [ext_resource type="Resource" uid="uid://bax62hfqurpiy" path="res://characters/streak/cards/streak_quick_strike.tres" id="3_qstr"]
 [ext_resource type="Resource" uid="uid://c4qv1bvknq2k" path="res://characters/streak/cards/streak_chain_dash.tres" id="4_chain"]
 [ext_resource type="Resource" uid="uid://cy1qi7r1ua7xf" path="res://characters/streak/cards/streak_phase_shift.tres" id="5_phase"]
-[ext_resource type="Resource" uid="uid://cyipn05acu0tb" path="res://characters/streak/cards/streak_velocity_draw.tres" id="6_vdraw"]
 
 [resource]
 script = ExtResource("1_ncslu")
-cards = Array[ExtResource("1_tnkis")]([ExtResource("3_qstr"), ExtResource("3_qstr"), ExtResource("4_chain"), ExtResource("5_phase"), ExtResource("6_vdraw"), ExtResource("6_vdraw")])
+cards = Array[ExtResource("1_tnkis")]([ExtResource("3_qstr"), ExtResource("3_qstr"), ExtResource("4_chain"), ExtResource("4_chain"), ExtResource("5_phase"), ExtResource("3_qstr"), ExtResource("3_qstr"), ExtResource("4_chain")])
