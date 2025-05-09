@@ -4,7 +4,7 @@ extends Resource
 signal status_applied(status: Status)
 signal status_changed
 
-enum Type {START_OF_TURN, END_OF_TURN, EVENT_BASED}
+enum Type {START_OF_TURN, END_OF_TURN, END_OF_ENEMY_TURN, EVENT_BASED}
 enum StackType {NONE, INTENSITY, DURATION}
 
 @export_group("Status Data")

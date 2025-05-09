@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" uid="uid://by0t78whsnjxh" path="res://custom_resources/enemy_stats.gd" id="1_7mfl6"]
 [ext_resource type="PackedScene" uid="uid://dbk6y12yqgre" path="res://enemies/crab/crab_enemy_ai.tscn" id="1_x0e6g"]
-[ext_resource type="Texture2D" uid="uid://ej4mxs58lxa3" path="res://art/thug.png" id="2_phnif"]
+[ext_resource type="Texture2D" uid="uid://crlewxhipcq24" path="res://art/crabenemy.png" id="2_phnif"]
 
 [resource]
 script = ExtResource("1_7mfl6")
 ai = ExtResource("1_x0e6g")
-scale_percent = 0.0885
+scale_percent = 0.03
 max_health = 25
 art = ExtResource("2_phnif")

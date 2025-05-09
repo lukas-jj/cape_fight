@@ -3,7 +3,7 @@ extends Node2D
 
 @export var battle_stats: BattleStats
 @export var char_stats: CharacterStats
-@export var music: AudioStream
+#@export var music: AudioStream
 @export var relics: RelicHandler
 
 @onready var battle_ui: BattleUI = $BattleUI
@@ -23,7 +23,7 @@ func _ready() -> void:
 
 func start_battle() -> void:
 	get_tree().paused = false
-	MusicPlayer.play(music, true)
+	#MusicPlayer.play(music, true)
 	
 	battle_ui.char_stats = char_stats
 	player.stats = char_stats
@@ -41,6 +41,22 @@ func _on_enemies_child_order_changed() -> void:
 
 
 func _on_enemy_turn_ended() -> void:
+	# DEBUG: Show how much block the player has right after all enemy attacks have resolved.
+	print("[Battle] End of enemy turn – player block:", player.stats.block)
+	
+	# Wait until END_OF_ENEMY_TURN statuses finish before starting the player's turn;
+	# otherwise block may be reset to 0 before Braced Defense deals damage.
+	var handler := player.status_handler
+	if not handler.statuses_applied.is_connected(_after_enemy_end_statuses):
+		handler.statuses_applied.connect(_after_enemy_end_statuses, CONNECT_ONE_SHOT)
+	
+	handler.apply_statuses_by_type(Status.Type.END_OF_ENEMY_TURN)
+
+
+func _after_enemy_end_statuses(type: Status.Type) -> void:
+	if type != Status.Type.END_OF_ENEMY_TURN:
+		return
+	
 	player_handler.start_turn()
 	enemy_handler.reset_enemy_actions()
 
@@ -56,4 +72,5 @@ func _on_relics_activated(type: Relic.Type) -> void:
 			player_handler.start_battle(char_stats)
 			battle_ui.initialize_card_pile_ui()
 		Relic.Type.END_OF_COMBAT:
-			Events.battle_over_screen_requested.emit("Deez Nuts!", BattleOverPanel.Type.WIN)
+			print(char_stats.resource_name)
+			Events.battle_over_screen_requested.emit("Victory!", BattleOverPanel.Type.WIN)

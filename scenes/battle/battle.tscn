@@ -1,12 +1,11 @@
-[gd_scene load_steps=24 format=3 uid="uid://cahno8aso5net"]
+[gd_scene load_steps=23 format=3 uid="uid://cahno8aso5net"]
 
 [ext_resource type="Script" uid="uid://xiat00rep5n8" path="res://scenes/battle/battle.gd" id="1_4s751"]
 [ext_resource type="PackedScene" uid="uid://d0efyathkfg74" path="res://scenes/enemy/enemy.tscn" id="2_02s5s"]
 [ext_resource type="Script" uid="uid://byrmgdcfpocoe" path="res://scenes/ui/hand.gd" id="2_uaw60"]
 [ext_resource type="PackedScene" uid="uid://2n4lap6w3pde" path="res://scenes/player/player.tscn" id="3_dpj45"]
-[ext_resource type="AudioStream" uid="uid://dpdenqqbovwfq" path="res://art/8_bit_iced_village_lofi.mp3" id="3_nuoky"]
 [ext_resource type="PackedScene" uid="uid://dwt63vvppukag" path="res://scenes/card_target_selector/card_target_selector.tscn" id="3_vyv1n"]
-[ext_resource type="Texture2D" uid="uid://c25yypxnyqkcq" path="res://art/background art game.png" id="4_5moxy"]
+[ext_resource type="Texture2D" uid="uid://cy5bmsv4tdgwb" path="res://battles/alleyfight.png" id="4_5moxy"]
 [ext_resource type="Script" uid="uid://wpalb5ga4k0o" path="res://scenes/enemy/enemy_handler.gd" id="4_41vpn"]
 [ext_resource type="Resource" uid="uid://sbkc4o401k4l" path="res://characters/warrior/warrior.tres" id="4_fwb8a"]
 [ext_resource type="Resource" uid="uid://bnmpwl3k8qb8n" path="res://enemies/crab/crab_enemy.tres" id="5_5flmk"]
@@ -29,11 +28,10 @@ size = Vector2(256, 100)
 [node name="Battle" type="Node2D"]
 script = ExtResource("1_4s751")
 char_stats = ExtResource("4_fwb8a")
-music = ExtResource("3_nuoky")
 metadata/_edit_lock_ = true
 
 [node name="Background" type="Sprite2D" parent="."]
-scale = Vector2(0.262695, 0.143555)
+scale = Vector2(0.25, 0.141602)
 texture = ExtResource("4_5moxy")
 centered = false
 
@@ -62,8 +60,8 @@ position = Vector2(234, 62)
 stats = ExtResource("8_d4c2d")
 
 [node name="Player" parent="." instance=ExtResource("3_dpj45")]
-position = Vector2(51, 95)
-scale = Vector2(0.06, 0.06)
+position = Vector2(88, 95)
+scale = Vector2(0.220004, 0.221748)
 stats = ExtResource("4_fwb8a")
 
 [node name="CardTargetSelector" parent="." instance=ExtResource("3_vyv1n")]

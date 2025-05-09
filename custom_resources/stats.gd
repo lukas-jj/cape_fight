@@ -33,7 +33,7 @@ func set_block(value : int) -> void:
 
 
 func take_damage(damage : int) -> void:
-	if damage <= 0:
+	if damage <= 0: 
 		return
 	var initial_damage = damage
 	damage = clampi(damage - block, 0, damage)

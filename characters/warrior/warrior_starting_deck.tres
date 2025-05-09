@@ -1,13 +1,13 @@
-[gd_resource type="Resource" script_class="CardPile" load_steps=8 format=3 uid="uid://db0hvjbdkvv2s"]
+[gd_resource type="Resource" script_class="CardPile" load_steps=8 format=3 uid="uid://8e6kf546wrqb"]
 
 [ext_resource type="Script" uid="uid://bf1x566n7ghum" path="res://custom_resources/card_pile.gd" id="1_ncslu"]
 [ext_resource type="Script" uid="uid://dak1pde8po1pa" path="res://custom_resources/card.gd" id="1_tnkis"]
-[ext_resource type="Resource" uid="uid://bcmktyqt2d7cm" path="res://characters/warrior/cards/warrior_angry_anvil.tres" id="2_gobyu"]
-[ext_resource type="Resource" uid="uid://btxc1odh1jmst" path="res://characters/warrior/cards/warrior_axe_attack.tres" id="3_ne0bc"]
+[ext_resource type="Resource" uid="uid://d4c8yfl4f4sat" path="res://characters/warrior/cards/warrior_block.tres" id="3_gobyu"]
 [ext_resource type="Resource" uid="uid://d20gx8xpmgpdi" path="res://characters/warrior/cards/warrior_big_slam.tres" id="4_mt3oe"]
 [ext_resource type="Resource" uid="uid://c8g8a5tx1sr2p" path="res://characters/warrior/cards/warrior_true_strength.tres" id="5_7axcj"]
 [ext_resource type="Resource" uid="uid://n3va254ct6b3" path="res://characters/warrior/cards/warrior_slash.tres" id="6_7axcj"]
+[ext_resource type="Resource" path="res://characters/warrior/cards/warrior_braced_defense.tres" id="6_g62ox"]
 
 [resource]
 script = ExtResource("1_ncslu")
-cards = Array[ExtResource("1_tnkis")]([ExtResource("2_gobyu"), ExtResource("3_ne0bc"), ExtResource("4_mt3oe"), ExtResource("5_7axcj"), ExtResource("6_7axcj")])
+cards = Array[ExtResource("1_tnkis")]([ExtResource("4_mt3oe"), ExtResource("3_gobyu"), ExtResource("5_7axcj"), ExtResource("6_7axcj"), ExtResource("6_g62ox")])

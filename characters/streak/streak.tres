@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="CharacterStats" load_steps=6 format=3 uid="uid://sbkc4o401k4l"]
 
 [ext_resource type="Script" uid="uid://cilhlfo2ra6m" path="res://custom_resources/character_stats.gd" id="1_d8ou5"]
-[ext_resource type="Texture2D" uid="uid://b1imrtxquxmnd" path="res://art/streak_sprite.png" id="1_i350r"]
+[ext_resource type="Texture2D" uid="uid://bvsbwi2wg6dim" path="res://characters/streak/streak_sprite.png" id="1_i350r"]
 [ext_resource type="Resource" uid="uid://cno2mmhf4bjci" path="res://characters/streak/streak_draftable_cards.tres" id="2_jojs0"]
 [ext_resource type="Resource" uid="uid://dyyfi3rcfxyug" path="res://characters/streak/streak_starting_deck.tres" id="3_d68oj"]
 [ext_resource type="Resource" uid="uid://dgsppvwlatlhw" path="res://relics/healing_potion.tres" id="5_wfusn"]

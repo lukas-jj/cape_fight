@@ -10,7 +10,7 @@ id = "streak_chain_dash"
 type = 0
 rarity = 0
 target = 1
-cost = 1
+cost = 2
 exhausts = false
 icon = ExtResource("1_tex")
 tooltip_text = "[center]Deal [color=\"ff0000\"]%s[/color] damage [color=\"0044ff\"]%s[/color] times to a single enemy.[/center]"

@@ -6,9 +6,9 @@
 [node name="Tier0Bats2" type="Node2D"]
 
 [node name="Enemy" parent="." instance=ExtResource("1_3y7rr")]
-position = Vector2(181, 75)
+position = Vector2(161, 86)
 stats = ExtResource("2_b1caj")
 
 [node name="Enemy2" parent="." instance=ExtResource("1_3y7rr")]
-position = Vector2(216, 106)
+position = Vector2(224, 87)
 stats = ExtResource("2_b1caj")

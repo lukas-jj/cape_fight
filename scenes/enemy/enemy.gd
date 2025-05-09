@@ -89,7 +89,7 @@ func do_turn() -> void:
 	
 	if not current_action:
 		return
-	
+	 
 	current_action.perform_action()
 
 
