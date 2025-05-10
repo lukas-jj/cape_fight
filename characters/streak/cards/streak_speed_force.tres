@@ -8,10 +8,12 @@ metadata/__load_path__ = "res://art/draw.ogg"
 [resource]
 script = ExtResource("1_71i2x")
 id = "streak_speed_force"
+title = "Speed Force"
 type = 2
 rarity = 2
 target = 0
 cost = 2
 exhausts = false
+speed = 1
 tooltip_text = "[center]Draw [color=\"0044ff\"]%s[/color] card now. At the start of your next turn, draw [color=\"0044ff\"]%s[/color] additional cards.[/center]"
 sound = SubResource("Resource_b2d16")

@@ -7,11 +7,13 @@
 [resource]
 script = ExtResource("2_scr")
 id = "streak_chain_dash"
+title = "Chain Dash"
 type = 0
 rarity = 0
 target = 1
 cost = 2
 exhausts = false
+speed = 1
 icon = ExtResource("1_tex")
 tooltip_text = "[center]Deal [color=\"ff0000\"]%s[/color] damage [color=\"0044ff\"]%s[/color] times to a single enemy.[/center]"
 sound = ExtResource("3_sfx")

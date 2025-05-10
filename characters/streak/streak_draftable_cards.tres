@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardPile" load_steps=11 format=3 uid="uid://cno2mmhf4bjci"]
+[gd_resource type="Resource" script_class="CardPile" load_steps=15 format=3 uid="uid://cno2mmhf4bjci"]
 
 [ext_resource type="Script" uid="uid://dak1pde8po1pa" path="res://custom_resources/card.gd" id="1_byq7g"]
 [ext_resource type="Script" uid="uid://bf1x566n7ghum" path="res://custom_resources/card_pile.gd" id="1_x06dg"]
@@ -10,7 +10,11 @@
 [ext_resource type="Resource" uid="uid://bjjy0ej8pmau4" path="res://characters/streak/cards/streak_speed_force.tres" id="6_speed"]
 [ext_resource type="Resource" uid="uid://dfx0681jji3ye" path="res://characters/streak/cards/streak_echo_step.tres" id="6_t6lhm"]
 [ext_resource type="Resource" uid="uid://b4wp05vqc8pgx" path="res://characters/streak/cards/streak_blink.tres" id="7_mvmhd"]
+[ext_resource type="Resource" uid="uid://crw6hc50d5kj2" path="res://characters/streak/cards/streak_adrenaline_kick.tres" id="8_adrk"]
+[ext_resource type="Resource" uid="uid://djrlds64mqj2y" path="res://characters/streak/cards/streak_dash_kick.tres" id="8_dashk"]
+[ext_resource type="Resource" uid="uid://cddi2gd35w6ue" path="res://characters/streak/cards/streak_piercing_dash.tres" id="8_pdash"]
+[ext_resource type="Resource" uid="uid://dq8feav37e3so" path="res://characters/streak/cards/streak_shadow_feint.tres" id="8_shf"]
 
 [resource]
 script = ExtResource("1_x06dg")
-cards = Array[ExtResource("1_byq7g")]([ExtResource("5_vdraw"), ExtResource("6_speed"), ExtResource("4_quick"), ExtResource("3_phase"), ExtResource("6_t6lhm"), ExtResource("3_chain"), ExtResource("6_0xa0s"), ExtResource("7_mvmhd"), ExtResource("5_vdraw"), ExtResource("3_chain"), ExtResource("7_mvmhd")])
+cards = Array[ExtResource("1_byq7g")]([ExtResource("5_vdraw"), ExtResource("6_speed"), ExtResource("4_quick"), ExtResource("3_phase"), ExtResource("6_t6lhm"), ExtResource("3_chain"), ExtResource("6_0xa0s"), ExtResource("7_mvmhd"), ExtResource("8_pdash"), ExtResource("8_adrk"), ExtResource("8_dashk"), ExtResource("8_shf")])

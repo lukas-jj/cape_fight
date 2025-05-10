@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://cm6t463to8kkj"]
+
+[ext_resource type="Script" uid="uid://cnxebpwwxj4tm" path="res://scenes/pvp/vs_ai.gd" id="1_k68fe"]
+
+[node name="VsAi" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_k68fe")

@@ -7,11 +7,13 @@
 [resource]
 script = ExtResource("2_scr")
 id = "streak_echo_step"
+title = "Echo Step"
 type = 1
 rarity = 0
 target = 0
 cost = 0
 exhausts = false
+speed = 1
 icon = ExtResource("1_1w0y2")
 tooltip_text = "[center]Gain [color=\"0044ff\"]%s[/color] Block. Next card costs 1 less this turn.[/center]"
 sound = ExtResource("3_sfx")

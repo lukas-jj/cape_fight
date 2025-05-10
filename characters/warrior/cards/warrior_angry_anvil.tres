@@ -7,11 +7,13 @@
 [resource]
 script = ExtResource("2_npntm")
 id = "warrior_angry_anvil"
+title = "Angry Anvil"
 type = 1
 rarity = 1
 target = 0
 cost = 1
 exhausts = false
+speed = 1
 icon = ExtResource("1_3oe33")
 tooltip_text = "[center]Gain [color=\"0044ff\"]%s[/color] block. Exhaust 1 random card.[/center]"
 sound = ExtResource("3_oo1yl")

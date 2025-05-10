@@ -4,6 +4,7 @@ extends Resource
 enum Type {ATTACK, SKILL, POWER}
 enum Rarity {COMMON, UNCOMMON, RARE}
 enum Target {SELF, SINGLE_ENEMY, ALL_ENEMIES, EVERYONE}
+enum Speed {SLOW, NORMAL, FAST, SNAP}
 
 const RARITY_COLORS := {
 	Card.Rarity.COMMON: Color.GRAY,
@@ -13,11 +14,13 @@ const RARITY_COLORS := {
 
 @export_group("Card Attributes")
 @export var id: String
+@export var title: String
 @export var type: Type
 @export var rarity: Rarity
 @export var target: Target
 @export var cost: int
 @export var exhausts: bool = false
+@export var speed: Speed = Speed.NORMAL
 
 @export_group("Card Visuals")
 @export var icon: Texture
@@ -66,4 +69,3 @@ func get_default_tooltip() -> String:
 
 func get_updated_tooltip(_player_modifiers: ModifierHandler, _enemy_modifiers: ModifierHandler) -> String:
 	return tooltip_text
-	

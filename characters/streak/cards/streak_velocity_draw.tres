@@ -5,9 +5,11 @@
 [resource]
 script = ExtResource("1")
 id = "streak_velocity_draw"
+title = "Velocity Draw"
 type = 1
 rarity = 0
 target = 0
 cost = 0
 exhausts = false
+speed = 1
 tooltip_text = "[center]Draw [color=\"0044ff\"]2[/color] cards.[/center]"

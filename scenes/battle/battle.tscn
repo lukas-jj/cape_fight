@@ -1,13 +1,13 @@
 [gd_scene load_steps=23 format=3 uid="uid://cahno8aso5net"]
 
-[ext_resource type="Script" uid="uid://xiat00rep5n8" path="res://scenes/battle/battle.gd" id="1_4s751"]
 [ext_resource type="PackedScene" uid="uid://d0efyathkfg74" path="res://scenes/enemy/enemy.tscn" id="2_02s5s"]
 [ext_resource type="Script" uid="uid://byrmgdcfpocoe" path="res://scenes/ui/hand.gd" id="2_uaw60"]
 [ext_resource type="PackedScene" uid="uid://2n4lap6w3pde" path="res://scenes/player/player.tscn" id="3_dpj45"]
 [ext_resource type="PackedScene" uid="uid://dwt63vvppukag" path="res://scenes/card_target_selector/card_target_selector.tscn" id="3_vyv1n"]
 [ext_resource type="Texture2D" uid="uid://cy5bmsv4tdgwb" path="res://battles/alleyfight.png" id="4_5moxy"]
 [ext_resource type="Script" uid="uid://wpalb5ga4k0o" path="res://scenes/enemy/enemy_handler.gd" id="4_41vpn"]
-[ext_resource type="Resource" uid="uid://sbkc4o401k4l" path="res://characters/warrior/warrior.tres" id="4_fwb8a"]
+[ext_resource type="Script" uid="uid://daongip7ugpjy" path="res://scenes/battle/battle.gd" id="4_156m4"]
+[ext_resource type="Resource" uid="uid://sbkc4o401k4l" path="res://characters/streak/streak.tres" id="4_fwb8a"]
 [ext_resource type="Resource" uid="uid://bnmpwl3k8qb8n" path="res://enemies/crab/crab_enemy.tres" id="5_5flmk"]
 [ext_resource type="Script" uid="uid://t1x4oyb5f2m6" path="res://scenes/ui/battle_ui.gd" id="7_18vit"]
 [ext_resource type="Script" uid="uid://ytx6ermclj37" path="res://scenes/player/player_handler.gd" id="8_3di7i"]
@@ -26,8 +26,7 @@
 size = Vector2(256, 100)
 
 [node name="Battle" type="Node2D"]
-script = ExtResource("1_4s751")
-char_stats = ExtResource("4_fwb8a")
+script = ExtResource("4_156m4")
 metadata/_edit_lock_ = true
 
 [node name="Background" type="Sprite2D" parent="."]

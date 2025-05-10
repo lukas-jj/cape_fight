@@ -7,11 +7,13 @@
 [resource]
 script = ExtResource("2_brwxd")
 id = "warrior_axe_attack"
+title = "Axe Attack"
 type = 0
 rarity = 0
 target = 1
 cost = 1
 exhausts = false
+speed = 1
 icon = ExtResource("1_mnudp")
 tooltip_text = "[center]Deal [color=\"ff0000\"]%s[/color] damage.[/center]"
 sound = ExtResource("3_fudr5")

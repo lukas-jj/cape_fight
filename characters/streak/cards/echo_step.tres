@@ -6,11 +6,13 @@
 [resource]
 script = ExtResource("2_1sgvw")
 id = "streak_echo_step.tres"
+title = "Echo Step"
 type = 1
 rarity = 0
 target = 0
 cost = 0
 exhausts = false
+speed = 1
 icon = ExtResource("1_qphkc")
 tooltip_text = ""
 metadata/_custom_type_script = "uid://dak1pde8po1pa"

@@ -7,11 +7,13 @@
 [resource]
 script = ExtResource("2_scr")
 id = "streak_quick_strike"
+title = "Quick Strike"
 type = 0
 rarity = 0
 target = 2
 cost = 1
 exhausts = false
+speed = 2
 icon = ExtResource("1_2bmij")
 tooltip_text = "[center]Deal [color=\"ff0000\"]%s[/color] damage and draw [color=\"0044ff\"]%s[/color] card.[/center]"
 sound = ExtResource("3_sfx")

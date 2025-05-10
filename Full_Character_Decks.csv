@@ -1,0 +1,21 @@
+Character,Deck,Card Name,Speed,Cost,Type,Effect
+Punchalot,Starter,Braced Defense,Fast,1,Block,Gain 10 Block. Leftover Block becomes damage at end of enemy turn.
+Punchalot,Starter,Counter Jab,Slow,1,Attack,"Deal 5 damage. If hit this turn, deal +5 bonus."
+Punchalot,Starter,One-Two Punch,Normal,2,Attack,"Deal 6 damage twice. If both hit, gain 1 Block."
+Punchalot,Starter,Taunt,Normal,1,Debuff,Force opponent to attack next turn. Apply Weak.
+Punchalot,Starter,Iron Fist,Fast,1,Block/Buff,Gain 6 Block. Next punch card this round deals +3 damage.
+Punchalot,Starter,Heavy Hook,Slow,1,Attack,Deal 8 damage. 50% chance to apply Stagger (opponent loses 1 card slot next turn).
+Punchalot,Draft,Second Wind,Fast,2,Block/Heal,Heal 6. Gain 6 Block.
+Punchalot,Draft,Haymaker,Slow,2,Attack,"Deal 18 damage. If opponent is Weak or Exposed, deal +6 more."
+Punchalot,Draft,Brace Up,Normal,1,Block,Gain 6 Block. Next card this turn is upgraded to Fast.
+Punchalot,Draft,Iron Will,Fast,1,Block,Gain 8 Block. Prevent next debuff.
+Streak,Starter,Quick Jab,Fast,1,Attack,Deal 6 damage.
+Streak,Starter,Double Strike,Normal,2,Attack,Deal 5 damage twice.
+Streak,Starter,Sidestep,Fast,1,Block,"Gain 6 Block. If opponent plays a Slow card this turn, gain +3 Block."
+Streak,Starter,Feint,Normal,0,Buff,Your next card this turn deals +5 damage.
+Streak,Starter,Speed Boost,Fast,1,Buff,Gain +1 Strength (next turn).
+Streak,Starter,Flash Combo,Normal,2,Attack,Deal 4 damage three times.
+Streak,Draft,Piercing Dash,Fast,2,Attack,Deal 8 damage. Ignores Block.
+Streak,Draft,Adrenaline Kick,Snap,1,Utility,Gain 1 Energy. Draw 1 card immediately.
+Streak,Draft,Dash Kick,Fast,1,Block/Attack,Gain 4 Block. Then deal 6 damage.
+Streak,Draft,Shadow Feint,Fast,1,Buff,Draw 1 card. Next attack deals +3 damage.

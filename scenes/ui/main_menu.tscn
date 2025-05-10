@@ -85,6 +85,12 @@ custom_minimum_size = Vector2(0, 14)
 layout_mode = 2
 text = "New Run"
 
+[node name="VsAI" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+text = "VS AI"
+
 [node name="Exit" type="Button" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 14)
 layout_mode = 2
