@@ -1,8 +1,10 @@
 extends Control
 
+# Ensure compiler sees PvpData even if not yet globally registered
+const PvpData := preload("res://pvp_data.gd")
+
 const CHAR_SELECTOR_SCENE := preload("res://scenes/ui/character_selector.tscn")
 const RUN_SCENE = preload("res://scenes/run/run.tscn")
-const VS_AI_SCENE := preload("res://scenes/pvp/vs_ai.tscn")
 
 @export var run_startup: RunStartup
 
@@ -30,4 +32,6 @@ func _on_exit_pressed() -> void:
 
 
 func _on_vs_ai_pressed() -> void:
-	get_tree().change_scene_to_packed(VS_AI_SCENE)
+	PvpData.vs_ai_enabled = true
+	PvpData.ai_stats = preload("res://characters/warrior/warrior.tres")
+	get_tree().change_scene_to_packed(CHAR_SELECTOR_SCENE)

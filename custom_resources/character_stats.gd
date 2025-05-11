@@ -37,6 +37,9 @@ func take_damage(damage: int) -> void:
 
 
 func can_play_card(card: Card) -> bool:
+	if card == null:
+		# Defensive – avoid nil cost access
+		return false
 	return mana >= card.cost
 
 

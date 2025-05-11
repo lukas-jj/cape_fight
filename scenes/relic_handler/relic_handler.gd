@@ -15,6 +15,7 @@ func _ready() -> void:
 
 
 func activate_relics_by_type(type: Relic.Type) -> void:
+	print("[RH] activate_relics_by_type called:", type, " children:", relics.get_child_count())
 	if type == Relic.Type.EVENT_BASED:
 		return
 		
@@ -22,8 +23,10 @@ func activate_relics_by_type(type: Relic.Type) -> void:
 		func(relic_ui: RelicUI):
 			return relic_ui.relic.type == type
 	)
+	print("[RH] relic_queue size:", relic_queue.size())
 	if relic_queue.is_empty():
 		relics_activated.emit(type)
+		print("[RH] queue empty – emitted", type)
 		return
 	
 	var tween := create_tween()

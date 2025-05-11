@@ -7,11 +7,13 @@
 [resource]
 script = ExtResource("2_hh2ps")
 id = "warrior_big_slam"
+title = ""
 type = 0
 rarity = 1
 target = 1
-cost = 2
+cost = 0
 exhausts = true
+speed = 1
 icon = ExtResource("1_11nym")
 tooltip_text = "[center]Deal [color=\"ff0000\"]%s[/color] damage and apply 2 [color=\"ffdf00\"]Exposed[/color].[/center]"
 sound = ExtResource("3_0l7j0")

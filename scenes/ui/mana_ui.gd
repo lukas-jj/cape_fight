@@ -19,4 +19,7 @@ func _set_char_stats(value: CharacterStats) -> void:
 
 
 func _on_stats_changed() -> void:
-	mana_label.text = "%s/%s" % [char_stats.mana, char_stats.max_mana]
+	if char_stats:
+		mana_label.text = "%s/%s" % [char_stats.mana, char_stats.max_mana]
+	else:
+		mana_label.text = "?/?"

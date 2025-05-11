@@ -1,17 +1,19 @@
-[gd_resource type="Resource" load_steps=4 format=3]
+[gd_resource type="Resource" load_steps=4 format=3 uid="uid://dhv5xvgbng1bj"]
 
-[ext_resource type="Texture2D" path="res://art/tile_0102.png" id="1_icon"]
-[ext_resource type="Script" path="res://characters/warrior/cards/warrior_braced_defense.gd" id="2_script"]
-[ext_resource type="AudioStream" path="res://art/block.ogg" id="3_sound"]
+[ext_resource type="Texture2D" uid="uid://oe7v35ii8vrs" path="res://art/tile_0102.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://81aiecx3tx0i" path="res://characters/warrior/cards/warrior_braced_defense.gd" id="2_script"]
+[ext_resource type="AudioStream" uid="uid://df64e7qat73gs" path="res://art/block.ogg" id="3_sound"]
 
 [resource]
 script = ExtResource("2_script")
 id = "warrior_braced_defense"
+title = ""
 type = 1
 rarity = 1
 target = 0
-cost = 2
+cost = 0
 exhausts = false
+speed = 1
 icon = ExtResource("1_icon")
 tooltip_text = "[center]Gain [color=\"0044ff\"]%s[/color] block.[/center]"
 sound = ExtResource("3_sound")

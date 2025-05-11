@@ -97,8 +97,11 @@ func _set_playable(value: bool) -> void:
 
 
 func _set_char_stats(value: CharacterStats) -> void:
+	if value == null:
+		return
 	char_stats = value
-	char_stats.stats_changed.connect(_on_char_stats_changed)
+	if char_stats.stats_changed and not char_stats.stats_changed.is_connected(_on_char_stats_changed):
+		char_stats.stats_changed.connect(_on_char_stats_changed)
 	_on_char_stats_changed()
 
 
@@ -113,15 +116,55 @@ func _on_drop_point_detector_area_exited(area: Area2D) -> void:
 
 func _on_card_drag_or_aiming_started(used_card: CardUI) -> void:
 	if used_card == self:
+		# Log which card has been picked up for dragging/aiming
+		var picked_name := "<null>"
+		if card:
+			if card.title != "":
+				picked_name = card.title
+			elif card.id != "":
+				picked_name = card.id
+			else:
+				picked_name = card.resource_name
+		print("[CardUI] DRAG PICKUP → %s (CardUI id: %d)" % [picked_name, self.get_instance_id()])
 		return
-	
+	# Any other card should be disabled while another is being dragged
 	disabled = true
 
 
-func _on_card_drag_or_aim_ended(_card: CardUI) -> void:
+func _on_card_drag_or_aim_ended(used_card: CardUI) -> void:
+	# Restore interactivity for non-dragged cards and ignore further processing
+	if used_card != self:
+		disabled = false
+		if char_stats:
+			playable = char_stats.can_play_card(card)
+		else:
+			playable = false
+		return
 	disabled = false
-	playable = char_stats.can_play_card(card)
+	if char_stats:
+		playable = char_stats.can_play_card(card)
+	else:
+		playable = false
+	# Check if released over a CardSlot
+	var slot := _get_slot_under_mouse()
+	if slot and slot.is_empty():
+		slot.accept_card(self)
+		return
 
 
 func _on_char_stats_changed() -> void:
-	playable = char_stats.can_play_card(card)
+	if char_stats:
+		playable = char_stats.can_play_card(card)
+	else:
+		playable = false
+
+
+# Helper to find slot under mouse
+func _get_slot_under_mouse() -> CardSlot:
+	var mouse_pos := get_global_mouse_position()
+	for n in get_tree().get_nodes_in_group("card_slots"):
+		if n is CardSlot:
+			var rect := Rect2(n.global_position, n.size)
+			if rect.has_point(mouse_pos):
+				return n
+	return null

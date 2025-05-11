@@ -19,6 +19,11 @@ func enter() -> void:
 
 
 func exit() -> void:
+	# When drag ends without being released onto a slot this.state machine will handle transition
+	# But if dropped on a CardSlot, CardSlot.accept_card will have reparents this card into slot.
+	# If the new parent is CardSlot, suppress reparent back to hand.
+	if card_ui.get_parent() is CardSlot:
+		return  # Stay in slot
 	Events.card_drag_ended.emit(card_ui)
 
 

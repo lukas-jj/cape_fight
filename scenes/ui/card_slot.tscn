@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://cotxtlw1343v1"]
+
+[ext_resource type="Script" uid="uid://bja1if7qcqqk6" path="res://scenes/ui/card_slot.gd" id="1"]
+
+[node name="CardSlot" type="Panel"]
+offset_right = 6.0
+offset_bottom = 6.0
+script = ExtResource("1")

@@ -24,8 +24,10 @@ func _ready() -> void:
 
 
 func start_battle(char_stats: CharacterStats) -> void:
+	print("[PH] start_battle called. deck:", char_stats.deck.cards.size())
 	character = char_stats
 	character.draw_pile = character.deck.custom_duplicate()
+	print("[PH] draw_pile after dup:", character.draw_pile.cards.size())
 	character.draw_pile.shuffle()
 	character.discard = CardPile.new()
 	relics.relics_activated.connect(_on_relics_activated)
@@ -40,17 +42,24 @@ func start_turn() -> void:
 
 
 func end_turn() -> void:
-	hand.disable_hand()
+	if hand:
+		hand.disable_hand()
 	relics.activate_relics_by_type(Relic.Type.END_OF_TURN)
 
 
 func draw_card() -> void:
+	print("[PH] draw_card called")
 	reshuffle_deck_from_discard()
-	hand.add_card(character.draw_pile.draw_card())
+	var card := character.draw_pile.draw_card()
+	if hand:
+		hand.add_card(card)
+		print("[PH] hand child count:", hand.get_child_count())
+	# If no hand assigned (e.g., AI disabled), skip UI add but keep card removed from draw pile
 	reshuffle_deck_from_discard()
 
 
 func draw_cards(amount: int, is_start_of_turn_draw: bool = false) -> void:
+	print("[PH] draw_cards called, amount:", amount, " start_of_turn:", is_start_of_turn_draw)
 	var tween := create_tween()
 	for i in range(amount):
 		tween.tween_callback(draw_card)
@@ -58,14 +67,16 @@ func draw_cards(amount: int, is_start_of_turn_draw: bool = false) -> void:
 	
 	tween.finished.connect(
 		func(): 
-			hand.enable_hand()
+			if hand:
+				hand.enable_hand()
+				print("[PH] draw_cards finished – hand size:", hand.get_child_count())
 			if is_start_of_turn_draw:
 				Events.player_hand_drawn.emit()
 	)
 
 
 func discard_cards() -> void:
-	if hand.get_child_count() == 0:
+	if not hand or hand.get_child_count() == 0:
 		Events.player_hand_discarded.emit()
 		return
 
@@ -96,11 +107,12 @@ func _on_card_played(card: Card) -> void:
 
 
 func _on_statuses_applied(type: Status.Type) -> void:
+	# Defer actions to next idle frame to prevent deep recursive signal chains
 	match type:
 		Status.Type.START_OF_TURN:
-			draw_cards(character.cards_per_turn, true)
+			call_deferred("draw_cards", character.cards_per_turn, true)
 		Status.Type.END_OF_TURN:
-			discard_cards()
+			call_deferred("discard_cards")
 
 
 func _on_relics_activated(type: Relic.Type) -> void:
