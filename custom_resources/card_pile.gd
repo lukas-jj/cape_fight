@@ -6,12 +6,13 @@ signal card_pile_size_changed(cards_amount)
 @export var cards: Array[Card] = []
 
 
+# ─────────── Basic operations ───────────
 func empty() -> bool:
 	return cards.is_empty()
 
 
 func draw_card() -> Card:
-	var card = cards.pop_front()
+	var card: Card = cards.pop_front()
 	card_pile_size_changed.emit(cards.size())
 	return card
 
@@ -29,31 +30,21 @@ func clear() -> void:
 	cards.clear()
 	card_pile_size_changed.emit(cards.size())
 
-
-# We need this method because of a Godot issue
-# reported here: 
-# https://github.com/godotengine/godot/issues/74918
+# ─────────── Helpers (shallow copy) ───────────
 func duplicate_cards() -> Array[Card]:
-	var new_array: Array[Card] = []
-	
-	for card: Card in cards:
-		new_array.append(card.duplicate())
-	
-	return new_array
+	# Shallow duplicate keeps original Card resources
+	var copy: Array[Card] = cards.duplicate()
+	return copy
 
 
-# We need this method because of a Godot issue
-# reported here: 
-# https://github.com/godotengine/godot/issues/74918
 func custom_duplicate() -> CardPile:
-	var new_card_pile := CardPile.new()
-	new_card_pile.cards = duplicate_cards()
-	
-	return new_card_pile
+	var new_pile: CardPile = CardPile.new()
+	new_pile.cards = cards.duplicate()   # shallow copy
+	return new_pile
 
-
+# ─────────── Debug print ───────────
 func _to_string() -> String:
-	var _card_strings: PackedStringArray = []
+	var lines: PackedStringArray = []
 	for i in range(cards.size()):
-		_card_strings.append("%s: %s" % [i+1, cards[i].id])
-	return "\n".join(_card_strings)
+		lines.append("%s: %s" % [i + 1, cards[i].id])
+	return "\n".join(lines)

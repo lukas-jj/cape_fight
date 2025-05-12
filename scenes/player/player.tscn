@@ -16,10 +16,10 @@ scale = Vector2(0.111953, 0.119531)
 texture = ExtResource("2_75vfm")
 
 [node name="StatsUI" parent="." instance=ExtResource("2_wnqqm")]
-offset_left = -70.0
+offset_left = -100.0
 offset_top = -101.0
-offset_right = 43.0
-offset_bottom = -84.0
+offset_right = -33.0
+offset_bottom = -85.0
 scale = Vector2(2.98563, 3.08081)
 
 [node name="StatusHandler" parent="." node_paths=PackedStringArray("status_owner") instance=ExtResource("4_60v6k")]

@@ -23,13 +23,13 @@ func set_card(value: Card) -> void:
 	if not is_node_ready():
 		await ready
 
-	print("[CardVisuals] set_card called. incoming:", value.resource_name if value else "null")
+#	print("[CardVisuals] set_card called. incoming:", value.resource_name if value else "null")
 
 	card = value
 
 	# Gracefully handle clearing visuals when card is null
 	if card == null:
-		print("[CardVisuals] value is null – clearing visuals")
+#		print("[CardVisuals] value is null – clearing visuals")
 		if cost:
 			cost.text = ""
 		if icon:
@@ -54,4 +54,4 @@ func set_card(value: Card) -> void:
 	if speed_label:
 		speed_label.text = SPEED_TEXT.get(card.speed, "")
 
-	print("[CardVisuals] card set complete. cost label exists:", cost!=null, "icon exists:", icon!=null)
+#	print("[CardVisuals] card set complete. cost label exists:", cost!=null, "icon exists:", icon!=null)

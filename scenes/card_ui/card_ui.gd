@@ -125,7 +125,7 @@ func _on_card_drag_or_aiming_started(used_card: CardUI) -> void:
 				picked_name = card.id
 			else:
 				picked_name = card.resource_name
-		print("[CardUI] DRAG PICKUP → %s (CardUI id: %d)" % [picked_name, self.get_instance_id()])
+		# print("[CardUI] DRAG PICKUP → %s (CardUI id: %d)" % [picked_name, self.get_instance_id()])
 		return
 	# Any other card should be disabled while another is being dragged
 	disabled = true

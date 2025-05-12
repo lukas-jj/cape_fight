@@ -24,10 +24,10 @@ func _ready() -> void:
 
 
 func start_battle(char_stats: CharacterStats) -> void:
-	print("[PH] start_battle called. deck:", char_stats.deck.cards.size())
+#	print("[PH] start_battle called. deck:", char_stats.deck.cards.size())
 	character = char_stats
 	character.draw_pile = character.deck.custom_duplicate()
-	print("[PH] draw_pile after dup:", character.draw_pile.cards.size())
+#	print("[PH] draw_pile after dup:", character.draw_pile.cards.size())
 	character.draw_pile.shuffle()
 	character.discard = CardPile.new()
 	relics.relics_activated.connect(_on_relics_activated)
@@ -59,7 +59,7 @@ func draw_card() -> void:
 
 
 func draw_cards(amount: int, is_start_of_turn_draw: bool = false) -> void:
-	print("[PH] draw_cards called, amount:", amount, " start_of_turn:", is_start_of_turn_draw)
+#	print("[PH] draw_cards called, amount:", amount, " start_of_turn:", is_start_of_turn_draw)
 	var tween := create_tween()
 	for i in range(amount):
 		tween.tween_callback(draw_card)
@@ -69,7 +69,7 @@ func draw_cards(amount: int, is_start_of_turn_draw: bool = false) -> void:
 		func(): 
 			if hand:
 				hand.enable_hand()
-				print("[PH] draw_cards finished – hand size:", hand.get_child_count())
+#				print("[PH] draw_cards finished – hand size:", hand.get_child_count())
 			if is_start_of_turn_draw:
 				Events.player_hand_drawn.emit()
 	)
@@ -112,7 +112,7 @@ func _on_statuses_applied(type: Status.Type) -> void:
 		Status.Type.START_OF_TURN:
 			call_deferred("draw_cards", character.cards_per_turn, true)
 		Status.Type.END_OF_TURN:
-			call_deferred("discard_cards")
+			call_deferred("discard_cçards")
 
 
 func _on_relics_activated(type: Relic.Type) -> void:

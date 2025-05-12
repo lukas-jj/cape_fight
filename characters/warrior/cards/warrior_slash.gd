@@ -18,6 +18,8 @@ func get_updated_tooltip(player_modifiers: ModifierHandler, enemy_modifiers: Mod
 
 func apply_effects(targets: Array[Node], modifiers: ModifierHandler) -> void:
 	var damage_effect := DamageEffect.new()
+	print("[Slash] apply_effects -> base:", base_damage, " modified:", modifiers.get_modified_value(base_damage, Modifier.Type.DMG_DEALT), " targets:", targets)
+	
 	damage_effect.amount = modifiers.get_modified_value(base_damage, Modifier.Type.DMG_DEALT)
 	damage_effect.sound = sound
 	damage_effect.execute(targets)
