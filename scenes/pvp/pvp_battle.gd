@@ -184,13 +184,40 @@ func _on_end_turn_pressed() -> void:
 	if not ai_stats_copy.discard:
 		ai_stats_copy.discard = CardPile.new()
 	
-	# Apply the copies
+	# Store the current health values before character reassignment
+	var current_player_health = 0
+	var current_ai_health = 0
+	
+	# Ensure we have valid characters before trying to access health
+	if player_handler and player_handler.character:
+		current_player_health = player_handler.character.health
+	if handler2 and handler2.character:
+		current_ai_health = handler2.character.health
+	
+	print("[HEALTH PRESERVE] Storing: Player health:", current_player_health, ", AI health:", current_ai_health)
+	
+	# Apply the character copies
 	player_handler.character = player_stats_copy
 	handler2.character = ai_stats_copy
+	
+	# CRITICAL: Manually preserve health values after character reassignment
+	if current_player_health > 0:  # Only restore if we had a valid health value
+		player_handler.character.health = current_player_health
+		print("[HEALTH RESTORED] Player health preserved:", player_handler.character.health)
+	else:
+		print("[HEALTH WARNING] Could not preserve player health, using default")
+		
+	if current_ai_health > 0:  # Only restore if we had a valid health value
+		handler2.character.health = current_ai_health
+		print("[HEALTH RESTORED] AI health preserved:", handler2.character.health)
+	else:
+		print("[HEALTH WARNING] Could not preserve AI health, using default")
 	
 	# Get the starting decks to populate/refill with the correct cards
 	var player_deck_cards = []
 	var ai_deck_cards = []
+	
+	# We already stored health values earlier, no need to do it again
 	
 	# First check if we have cards in the discard pile to shuffle back
 	print("[DECK REFILL] Checking discard piles to reshuffle")
@@ -259,9 +286,18 @@ func _on_end_turn_pressed() -> void:
 	# We'll handle card drawing ourselves to avoid duplicate calls
 	print("[CUSTOM TURN] Skipping normal start_turn and doing direct draw")
 	
-	# 4. Reset some basic state
+	# 4. Reset some basic state but preserve health
+	# Store current health values before any state changes
+	var player_health = player_handler.character.health
+	var ai_health = handler2.character.health
+	
+	# Reset block for both player and AI
 	player_handler.character.block = 0
+	handler2.character.block = 0
+	
+	# Reset other state
 	player_handler.character.reset_mana()
+	handler2.character.reset_mana() # Also reset AI's mana
 	
 	# 5. Draw exactly 4 cards ourselves
 	print("[DIRECT DRAW] Drawing exactly 4 cards for player")
@@ -513,10 +549,22 @@ func _resolve_slot(idx: int, ai_card: Card) -> void:
 			
 			# Apply damage if this is an attack
 			if damage > 0:
-				# ALWAYS apply damage directly to health, ignoring other effects
-				player2.stats.health -= damage
-				print("[BRUTE FORCE] Applied ", damage, " GUARANTEED damage to AI")
-				print("[HEALTH] AI health now: ", player2.stats.health)
+				# Apply block mechanics properly
+				var remaining_damage = damage
+				var block_used = 0
+				
+				# Use block to absorb damage if available
+				if player2.stats.block > 0:
+					block_used = min(player2.stats.block, remaining_damage)
+					player2.stats.block -= block_used
+					remaining_damage -= block_used
+					print("[BLOCK] AI used ", block_used, " block to absorb damage")
+				
+				# Only apply remaining damage to health
+				if remaining_damage > 0:
+					player2.stats.health -= remaining_damage
+					print("[DAMAGE] Applied ", remaining_damage, " damage to AI health")
+				print("[HEALTH] AI health now: ", player2.stats.health, " (Block: ", player2.stats.block, ")")
 		else:
 			print("[PVP_FIX] Speedster card: ", card_obj.id)
 			
@@ -533,10 +581,22 @@ func _resolve_slot(idx: int, ai_card: Card) -> void:
 					
 			# Apply damage if this is an attack
 			if damage > 0:
-				# ALWAYS apply damage directly to health, ignoring other effects
-				player.stats.health -= damage
-				print("[BRUTE FORCE] Applied ", damage, " GUARANTEED damage to Player")
-				print("[HEALTH] Player health now: ", player.stats.health)
+				# Apply block mechanics properly
+				var remaining_damage = damage
+				var block_used = 0
+				
+				# Use block to absorb damage if available
+				if player.stats.block > 0:
+					block_used = min(player.stats.block, remaining_damage)
+					player.stats.block -= block_used
+					remaining_damage -= block_used
+					print("[BLOCK] Player used ", block_used, " block to absorb damage")
+				
+				# Only apply remaining damage to health
+				if remaining_damage > 0:
+					player.stats.health -= remaining_damage
+					print("[DAMAGE] Applied ", remaining_damage, " damage to Player health")
+				print("[HEALTH] Player health now: ", player.stats.health, " (Block: ", player.stats.block, ")")
 				
 			# After effect stats
 			print("[PVP_STATS] After effect - Player HP: ", player.stats.health, ", block: ", player.stats.block)
