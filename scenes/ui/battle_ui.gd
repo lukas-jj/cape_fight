@@ -8,7 +8,7 @@ extends CanvasLayer
 @onready var end_turn_button: Button        = $EndTurnButton
 # after:
 @onready var draw_pile_button: CardPileOpener    = %DrawPileButton
-@onready var discard_pile_button: CardPileOpener = $DiscardPileButton
+@onready var discard_pile_button: CardPileOpener = %DiscardPileButton
 @onready var draw_pile_view: CardPileView        = %DrawPileView
 @onready var discard_pile_view: CardPileView     = %DiscardPileView
 

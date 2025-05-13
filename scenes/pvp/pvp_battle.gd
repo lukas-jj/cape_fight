@@ -23,14 +23,12 @@ static func _speed_rank(spd: Card.Speed) -> int:
 		Card.Speed.SNAP:   return 3
 		_:                 return 1
 
-
 func _ready() -> void:
 	_rng.randomize()
 	_load_stats()
 	_make_relic_handlers()
 	_setup_ui_slots()
 
-	# NOW set BattleUI.char_stats and wire up piles
 	battle_ui.char_stats = player.stats
 	battle_ui.initialize_card_pile_ui()
 
@@ -39,18 +37,16 @@ func _ready() -> void:
 	Events.player_hand_drawn.connect(_on_player_hand_drawn)
 	Events.player_turn_ended.connect(_on_end_turn_pressed)
 
-
 func _load_stats() -> void:
 	if PvpData.player_stats:
-		player.stats  = PvpData.player_stats.create_instance()
+		player.stats = PvpData.player_stats.create_instance()
 	else:
-		player.stats  = CharacterStats.new()
+		player.stats = CharacterStats.new()
 
 	if PvpData.ai_stats:
 		player2.stats = PvpData.ai_stats.create_instance()
 	else:
 		player2.stats = CharacterStats.new()
-
 
 func _make_relic_handlers() -> void:
 	if player_handler.relics == null:
@@ -62,30 +58,21 @@ func _make_relic_handlers() -> void:
 		add_child(rh2)
 		handler2.relics = rh2
 
-
 func _setup_ui_slots() -> void:
-	# add all slots to the “card_slots” group for drop detection
 	for s in battle_ui.player_slots + battle_ui.enemy_slots:
 		s.add_to_group("card_slots")
-
-	# disable end‐turn until 3 placed
 	end_turn_btn.disabled = true
 	for s in battle_ui.player_slots:
 		s.card_changed.connect(_on_slot_card_changed)
 
-
 func _start_battle() -> void:
-	# link your handlers
 	player_handler.hand = battle_ui.hand
 	handler2.hand       = null
 
 	player_handler.start_battle(player.stats)
 	handler2.start_battle(player2.stats)
 
-	# both draw their opening hand
-	#player_handler.start_turn()  # this will emit player_hand_drawn once done
-	_draw_ai_hand()              # log AI hand now
-
+	_draw_ai_hand()
 
 func _draw_ai_hand() -> void:
 	ai_hand.clear()
@@ -99,13 +86,11 @@ func _draw_ai_hand() -> void:
 		ids.append(c.id)
 	print("[AI HAND] Count:", ids.size(), "→", ids)
 
-
 func _on_player_hand_drawn() -> void:
 	var ids = []
 	for ui in battle_ui.hand.get_children():
 		ids.append(ui.card.id)
 	print("[PLAYER HAND] Count:", ids.size(), "→", ids)
-
 
 func _on_slot_card_changed(card_ui: CardUI) -> void:
 	var filled = 0
@@ -114,97 +99,210 @@ func _on_slot_card_changed(card_ui: CardUI) -> void:
 			filled += 1
 	end_turn_btn.disabled = (filled < 3)
 
-
 func _on_end_turn_pressed() -> void:
-	# collect AI picks & populate enemy slots
-	var picks = _ai_pick_three()
-
+	# Immediately disable button to prevent multiple calls
+	end_turn_btn.disabled = true
+	print("[DEBUG] End turn pressed, calling _ai_pick_three()")
+	var picks = await _ai_pick_three()
+	print("[DEBUG] After _ai_pick_three() returned picks size=", picks.size())
 	for i in range(3):
 		var ai_card : Card = null
 		if i < picks.size():
 			ai_card = picks[i]
 		_resolve_slot(i, ai_card)
 
-	# clear all slots for next turn
 	for s in battle_ui.player_slots + battle_ui.enemy_slots:
 		s.clear()
 
-	# finish and start next turn
+	for card_ui in battle_ui.hand.get_children():
+		if card_ui.card:
+			player_handler.character.discard.add_card(card_ui.card)
+		card_ui.queue_free()
+
 	player_handler.end_turn()
 	player_handler.start_turn()
 	_draw_ai_hand()
 
-
+# ============================
+# MAIN AI CARD SLOT LOGIC ZONE
+# ============================
 func _ai_pick_three() -> Array[Card]:
-	var picks = []
-
-	# use AI’s hand first
+	print("[DEBUG] _ai_pick_three(): ai_hand.size()=", ai_hand.size(), ", starting draw.")
+	var picks: Array[Card] = []
 	while ai_hand.size() > 0 and picks.size() < 3:
 		picks.append(ai_hand.pop_back())
-
-	# top up from draw pile
+	print("[DEBUG] After ai_hand pop: picks.size()=", picks.size())
 	while picks.size() < 3 and not player2.stats.draw_pile.empty():
 		picks.append(player2.stats.draw_pile.draw_card())
-
-	# manual Fisher–Yates shuffle
+	# Shuffle picks
+	var debug_ids = []
+	for p in picks:
+		debug_ids.append(p.id)
+	print("[DEBUG] Before shuffle: picks size =", picks.size(), " ids =", debug_ids)
 	for i in range(picks.size()):
 		var j = _rng.randi_range(i, picks.size() - 1)
 		var tmp = picks[i]
 		picks[i] = picks[j]
 		picks[j] = tmp
 
-	# show in enemy UI slots
 	var ids = []
+	# Clear all enemy slots first
 	for idx in range(battle_ui.enemy_slots.size()):
+		battle_ui.enemy_slots[idx].clear()
+		
+	# Then assign AI cards to slots sequentially
+	for idx in range(min(picks.size(), battle_ui.enemy_slots.size())):
 		var slot = battle_ui.enemy_slots[idx]
-		slot.clear()
-		if idx < picks.size():
+		print("[DEBUG] Processing slot", idx, " - is null?", slot == null)
+		if true: # Simplified condition since we're already min-bounded
+			var picked_card = picks[idx]
 			var ui = CARD_UI_SCENE.instantiate() as CardUI
-			ui.card       = picks[idx]
+			print("[ASSIGNING] Slot", idx, " picked card id =", picked_card.id, "ui valid?", ui != null)
+
 			ui.char_stats = player2.stats
-			ui.disabled   = true
+			ui.disabled = true
+			# Set card first to ensure CardUI is ready with card
+			ui.card = picked_card
+			# Then place in slot
 			slot.accept_card(ui)
-			ids.append(picks[idx].id)
+			# Store reference in slot
+			slot.card_ui = ui
+			print("[DEBUG] After slot accept, slot.card_ui=", slot.card_ui != null)              # set card after ready so visuals update via setter
+			print("[DEBUG] Assigned Slot", idx, "with", ui.card.id)
+			ids.append(picked_card.id)
+
+	print("[DEBUG] Final picked card count:", ids.size(), ", slots filled:", battle_ui.enemy_slots.size())
+	for i in range(battle_ui.enemy_slots.size()):
+		var slot = battle_ui.enemy_slots[i]
+		print("[DEBUG] Slot", i, " has card_ui =", "valid" if slot.card_ui != null else "null")
+		if slot.card_ui:
+			print("[DEBUG]   - card_ui.card =", "valid" if slot.card_ui.card != null else "null", 
+			", id =", slot.card_ui.card.id if slot.card_ui and slot.card_ui.card else "none")
 	print("[AI PICKS] Count:", ids.size(), "→", ids)
-
-	return picks
-
+	# AI picks prepared
+	return picks as Array[Card]
 
 func _resolve_slot(idx: int, ai_card: Card) -> void:
 	var p_slot = battle_ui.player_slots[idx]
+	var e_slot = battle_ui.enemy_slots[idx]
 	var p_ui   = p_slot.card_ui
+	var ai_ui  = e_slot.card_ui
+	# Backup: the picked card object in case UI assignment failed
+	var ai_card_obj : Card = ai_card
 
-	# build a throwaway AI UI for resolution
-	var ai_ui: CardUI = null
-	if ai_card != null:
-		ai_ui = CARD_UI_SCENE.instantiate() as CardUI
-		ai_ui.card       = ai_card
-		ai_ui.char_stats = player2.stats
-		ai_ui.disabled   = true
+	var p_id = "None"
+	var ai_id = "None"
+	var rp = -1
+	var re = -1
 
-	# decide order
+	if p_ui != null:
+		if p_ui.card != null:
+			p_id = p_ui.card.id
+			if "speed" in p_ui.card:
+				rp = _speed_rank(p_ui.card.speed)
+			else:
+				print("[WARN] Player card has no speed. Defaulting to NORMAL (1)")
+				rp = 1
+		else:
+			print("[DEBUG] Player UI exists but .card is null (Slot", idx, ")")
+	else:
+		print("[DEBUG] Player UI is null (Slot", idx, ")")
+
+	if ai_ui != null and ai_ui.card != null:
+		ai_card_obj = ai_ui.card
+		ai_id = ai_ui.card.id
+		if "speed" in ai_ui.card:
+			re = _speed_rank(ai_ui.card.speed)
+		else:
+			print("[WARN] AI card has no speed. Defaulting to NORMAL (1)")
+			re = 1
+	else:
+		if ai_card_obj != null:
+			ai_id = ai_card_obj.id
+			re = _speed_rank(ai_card_obj.speed)
+			print("[INFO] Using ai_card backup for Slot", idx, ", id=", ai_id)
+		else:
+			print("[DEBUG] AI UI is null and no backup card (Slot", idx, ")")
+
+	print("[RESOLVE] Slot", idx, ": P=", p_id, "(Speed:", rp, "), AI=", ai_id, "(Speed:", re, ")")
+
 	var order = []
-	if p_ui and ai_ui:
-		var rp = _speed_rank(p_ui.card.speed)
-		var re = _speed_rank(ai_ui.card.speed)
-		if rp >= re:
-			order = [p_ui, ai_ui]
+	if p_ui and p_ui.card and ai_ui and ai_ui.card:
+		if rp > re:
+			order.append(p_ui)
+			order.append(ai_ui)
+			print("[ORDER] Player card is faster")
+		elif re > rp:
+			order.append(ai_ui)
+			order.append(p_ui)
+			print("[ORDER] AI card is faster")
 		else:
-			order = [ai_ui, p_ui]
-	elif p_ui:
-		order = [p_ui]
-	elif ai_ui:
-		order = [ai_ui]
+			if _rng.randi_range(0, 1) == 0:
+				order.append(p_ui)
+				order.append(ai_ui)
+				print("[ORDER] Same speed, randomly chose Player first")
+			else:
+				order.append(ai_ui)
+				order.append(p_ui)
+				print("[ORDER] Same speed, randomly chose AI first")
+	elif p_ui and p_ui.card:
+		order.append(p_ui)
+		print("[ORDER] Only Player card present")
+	elif ai_card_obj:
+		# create temporary order wrapper by using null UI but card object
+		order.append(ai_card_obj)
+		print("[ORDER] Only AI backup card present")
+	else:
+		print("[ORDER] No valid cards to resolve at Slot", idx)
 
-	# play them
-	for ui in order:
-		if ui == p_ui:
-			ui.card.play([player2], player.stats, player.modifier_handler)
-			player_handler.character.discard.add_card(ui.card)
+	for element in order:
+		var is_player_card : bool = (element == p_ui or (element is CardUI and element == p_ui))
+		var card_obj : Card = null
+		if element is CardUI:
+			card_obj = (element as CardUI).card
 		else:
-			ui.card.play([player], player2.stats, player2.modifier_handler)
-			handler2.character.discard.add_card(ui.card)
+			card_obj = element
+		var owner_stats : CharacterStats
+		var owner_modifiers : ModifierHandler
+		if is_player_card:
+			owner_stats = player.stats
+			owner_modifiers = player.modifier_handler
+		else:
+			owner_stats = player2.stats
+			# Fix: player2 is a Player node, so access modifier_handler directly
+			owner_modifiers = player2.modifier_handler
 
-	p_slot.clear()
+		var target_nodes : Array[Node] = []
+
+		# Determine correct targets based on card type
+		if card_obj.target == Card.Target.SELF:
+			# Self-targeting (e.g. Block) should affect the card owner
+			if is_player_card:
+				target_nodes = [player]
+			else:
+				target_nodes = [player2]
+
+			# Manually execute the card to avoid _get_targets() returning the wrong entity
+			Events.card_played.emit(card_obj)
+			owner_stats.mana -= card_obj.cost
+			card_obj.apply_effects(target_nodes, owner_modifiers)
+		else:
+			# Offensive / enemy-targeting cards
+			if is_player_card:
+				target_nodes = [player2]
+			else:
+				target_nodes = [player]
+			card_obj.play(target_nodes, owner_stats, owner_modifiers)
+
+		# Move the card to the appropriate discard pile
+		if is_player_card:
+			player_handler.character.discard.add_card(card_obj)
+		else:
+			handler2.character.discard.add_card(card_obj)
+
 	if ai_ui:
-		ai_ui.free()
+		ai_ui.queue_free()
+	if p_slot:
+		p_slot.clear()
+	if e_slot:
+		e_slot.clear()

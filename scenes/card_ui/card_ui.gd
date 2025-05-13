@@ -8,7 +8,11 @@ const DRAG_STYLEBOX := preload("res://scenes/card_ui/card_drag_stylebox.tres")
 const HOVER_STYLEBOX := preload("res://scenes/card_ui/card_hover_stylebox.tres")
 
 @export var player_modifiers: ModifierHandler
-@export var card: Card : set = _set_card
+
+# Use backing field to avoid recursive setter calls
+var _card_internal: Card
+@export var card: Card: set = _set_card, get = _get_card
+
 @export var char_stats: CharacterStats : set = _set_char_stats
 
 @onready var card_visuals: CardVisuals = $CardVisuals
@@ -41,10 +45,10 @@ func animate_to_position(new_position: Vector2, duration: float) -> void:
 
 
 func play() -> void:
-	if not card:
+	if not _card_internal:
 		return
 	
-	card.play(targets, char_stats, player_modifiers)
+	_card_internal.play(targets, char_stats, player_modifiers)
 	queue_free()
 
 
@@ -62,8 +66,8 @@ func is_hovered() -> bool:
 
 func request_tooltip() -> void:
 	var enemy_modifiers := get_active_enemy_modifiers()
-	var updated_tooltip := card.get_updated_tooltip(player_modifiers, enemy_modifiers)
-	Events.card_tooltip_requested.emit(card.icon, updated_tooltip)
+	var updated_tooltip := _card_internal.get_updated_tooltip(player_modifiers, enemy_modifiers)
+	Events.card_tooltip_requested.emit(_card_internal.icon, updated_tooltip)
 
 
 func _on_gui_input(event: InputEvent) -> void:
@@ -78,22 +82,32 @@ func _on_mouse_exited() -> void:
 	card_state_machine.on_mouse_exited()
 
 
-func _set_card(value: Card) -> void:
-	if not is_node_ready():
-		await ready
+func _get_card() -> Card:
+	return _card_internal
 
-	card = value
-	card_visuals.card = card
+
+func _set_card(value: Card) -> void:
+	_card_internal = value
+	if is_node_ready():
+		card_visuals.card = _card_internal
 
 
 func _set_playable(value: bool) -> void:
 	playable = value
+
+	if not is_node_ready() or not is_instance_valid(card_visuals):
+		return
+
 	if not playable:
-		card_visuals.cost.add_theme_color_override("font_color", Color.RED)
-		card_visuals.icon.modulate = Color(1, 1, 1, 0.5)
+		if card_visuals.cost:
+			card_visuals.cost.add_theme_color_override("font_color", Color.RED)
+		if card_visuals.icon:
+			card_visuals.icon.modulate = Color(1, 1, 1, 0.5)
 	else:
-		card_visuals.cost.remove_theme_color_override("font_color")
-		card_visuals.icon.modulate = Color(1, 1, 1, 1)
+		if card_visuals.cost:
+			card_visuals.cost.remove_theme_color_override("font_color")
+		if card_visuals.icon:
+			card_visuals.icon.modulate = Color(1, 1, 1, 1)
 
 
 func _set_char_stats(value: CharacterStats) -> void:
@@ -118,13 +132,13 @@ func _on_card_drag_or_aiming_started(used_card: CardUI) -> void:
 	if used_card == self:
 		# Log which card has been picked up for dragging/aiming
 		var picked_name := "<null>"
-		if card:
-			if card.title != "":
-				picked_name = card.title
-			elif card.id != "":
-				picked_name = card.id
+		if _card_internal:
+			if _card_internal.title != "":
+				picked_name = _card_internal.title
+			elif _card_internal.id != "":
+				picked_name = _card_internal.id
 			else:
-				picked_name = card.resource_name
+				picked_name = _card_internal.resource_name
 		# print("[CardUI] DRAG PICKUP → %s (CardUI id: %d)" % [picked_name, self.get_instance_id()])
 		return
 	# Any other card should be disabled while another is being dragged
@@ -136,13 +150,13 @@ func _on_card_drag_or_aim_ended(used_card: CardUI) -> void:
 	if used_card != self:
 		disabled = false
 		if char_stats:
-			playable = char_stats.can_play_card(card)
+			playable = char_stats.can_play_card(_card_internal)
 		else:
 			playable = false
 		return
 	disabled = false
 	if char_stats:
-		playable = char_stats.can_play_card(card)
+		playable = char_stats.can_play_card(_card_internal)
 	else:
 		playable = false
 	# Check if released over a CardSlot
@@ -154,7 +168,7 @@ func _on_card_drag_or_aim_ended(used_card: CardUI) -> void:
 
 func _on_char_stats_changed() -> void:
 	if char_stats:
-		playable = char_stats.can_play_card(card)
+		playable = char_stats.can_play_card(_card_internal)
 	else:
 		playable = false
 

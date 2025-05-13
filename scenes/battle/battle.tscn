@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cy5bmsv4tdgwb" path="res://battles/alleyfight.png" id="4_5moxy"]
 [ext_resource type="Script" uid="uid://wpalb5ga4k0o" path="res://scenes/enemy/enemy_handler.gd" id="4_41vpn"]
 [ext_resource type="Script" uid="uid://daongip7ugpjy" path="res://scenes/battle/battle.gd" id="4_156m4"]
-[ext_resource type="Resource" uid="uid://sbkc4o401k4l" path="res://characters/streak/streak.tres" id="4_fwb8a"]
+[ext_resource type="Resource" uid="uid://sbkc4o401k4l" path="res://characters/warrior/warrior.tres" id="4_fwb8a"]
 [ext_resource type="Resource" uid="uid://bnmpwl3k8qb8n" path="res://enemies/crab/crab_enemy.tres" id="5_5flmk"]
 [ext_resource type="Script" uid="uid://t1x4oyb5f2m6" path="res://scenes/ui/battle_ui.gd" id="7_18vit"]
 [ext_resource type="Script" uid="uid://ytx6ermclj37" path="res://scenes/player/player_handler.gd" id="8_3di7i"]
