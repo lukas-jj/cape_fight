@@ -49,17 +49,35 @@ func end_turn() -> void:
 
 func draw_card() -> void:
 	print("[PH] draw_card called")
+	
+	# ABSOLUTE HARD LIMIT - NEVER exceed cards_per_turn
+	if hand and hand.get_child_count() >= character.cards_per_turn:
+		print("[PH] HARD LIMIT REACHED - NO MORE CARDS")
+		return
+		
 	reshuffle_deck_from_discard()
 	var card := character.draw_pile.draw_card()
 	if hand:
 		hand.add_card(card)
-		print("[PH] hand child count:", hand.get_child_count())
+		print("[PH] hand child count:", hand.get_child_count(), "/", character.cards_per_turn)
+		
 	# If no hand assigned (e.g., AI disabled), skip UI add but keep card removed from draw pile
 	reshuffle_deck_from_discard()
 
 
 func draw_cards(amount: int, is_start_of_turn_draw: bool = false) -> void:
-#	print("[PH] draw_cards called, amount:", amount, " start_of_turn:", is_start_of_turn_draw)
+	# CRITICAL FIX - enforce cards_per_turn limit
+	if is_start_of_turn_draw and character and character.cards_per_turn > 0:
+		print("[PH] ENFORCING limit: ", character.cards_per_turn, " cards maximum")
+		amount = min(amount, character.cards_per_turn)
+		
+	# Clear existing hand
+	if hand and is_start_of_turn_draw:
+		print("[PH] Clearing existing hand")
+		for child in hand.get_children():
+			child.queue_free()
+	
+	print("[PH] Drawing ", amount, " cards") 
 	var tween := create_tween()
 	for i in range(amount):
 		tween.tween_callback(draw_card)
@@ -69,7 +87,7 @@ func draw_cards(amount: int, is_start_of_turn_draw: bool = false) -> void:
 		func(): 
 			if hand:
 				hand.enable_hand()
-#				print("[PH] draw_cards finished – hand size:", hand.get_child_count())
+				print("[PH] draw_cards finished – hand size:", hand.get_child_count())
 			if is_start_of_turn_draw:
 				Events.player_hand_drawn.emit()
 	)
@@ -90,12 +108,20 @@ func discard_cards() -> void:
 
 
 func reshuffle_deck_from_discard() -> void:
-	if not character.draw_pile.empty():
+	# Check that all required objects exist
+	if not character or not character.draw_pile or not character.discard:
+		print("[ERROR] Cannot reshuffle - missing character, draw_pile or discard pile")
+		return
+	
+	# Check if draw pile already has cards
+	if not character.draw_pile.cards.is_empty():
 		return
 
-	while not character.discard.empty():
+	# Move cards from discard to draw pile
+	while not character.discard.cards.is_empty():
 		character.draw_pile.add_card(character.discard.draw_card())
 
+	# Shuffle the new draw pile
 	character.draw_pile.shuffle()
 
 
