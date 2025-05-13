@@ -528,84 +528,85 @@ func _resolve_slot(idx: int, ai_card: Card) -> void:
 		owner_stats.mana -= card_obj.cost
 		card_obj.apply_effects(target_nodes, owner_modifiers)
 		
-		# MEGA DAMAGE FIX: Apply hardcoded damage values for ALL cards
+		# Process card effects dynamically using actual card properties
+		# Get the target player for this card
+		var effect_target = null
+		var effect_source = null
+		
+		if target_nodes.size() > 0 and target_nodes[0] is Player:
+			effect_target = target_nodes[0]
+		
+		# Set up attacker and target based on card owner
 		if is_player_card:
-			print("[PVP_FIX] Warrior card: ", card_obj.id)
-			
-			# Handle warrior damage by card ID
-			var damage = 0
-			if card_obj.id == "warrior_slash":
-				damage = 4
-			elif card_obj.id == "warrior_big_slam":
-				damage = 8
-			elif card_obj.id == "warrior_block":
-				# Block card, no damage
-				print("[BLOCK] Adding 5 block to player")
-				player.stats.block += 5
-			elif card_obj.id == "warrior_braced_defense":
-				# Defense card, no damage
-				print("[BLOCK] Adding 10 block to player")
-				player.stats.block += 10
-			
-			# Apply damage if this is an attack
-			if damage > 0:
-				# Apply block mechanics properly
-				var remaining_damage = damage
-				var block_used = 0
-				
-				# Use block to absorb damage if available
-				if player2.stats.block > 0:
-					block_used = min(player2.stats.block, remaining_damage)
-					player2.stats.block -= block_used
-					remaining_damage -= block_used
-					print("[BLOCK] AI used ", block_used, " block to absorb damage")
-				
-				# Only apply remaining damage to health
-				if remaining_damage > 0:
-					player2.stats.health -= remaining_damage
-					print("[DAMAGE] Applied ", remaining_damage, " damage to AI health")
-				print("[HEALTH] AI health now: ", player2.stats.health, " (Block: ", player2.stats.block, ")")
+			print("[CARD] Player using ", card_obj.id, " targeting ", "AI" if effect_target == player2 else "self")
+			effect_source = player
 		else:
-			print("[PVP_FIX] Speedster card: ", card_obj.id)
+			print("[CARD] AI using ", card_obj.id, " targeting ", "Player" if effect_target == player else "self")
+			effect_source = player2
+		
+		# Show health/block before effect
+		print("[PRE-EFFECT] Player HP: ", player.stats.health, ", Block: ", player.stats.block)
+		print("[PRE-EFFECT] AI HP: ", player2.stats.health, ", Block: ", player2.stats.block)
+		
+		# Process attack/damage cards
+		if "base_damage" in card_obj and card_obj.base_damage > 0:
+			var damage = card_obj.base_damage
+			print("[DAMAGE CARD] Using card's base_damage value: ", damage)
 			
-			# Handle speedster damage by card ID
-			var damage = 0
-			if card_obj.id == "streak_quick_strike":
-				damage = 5
-			elif card_obj.id == "streak_chain_dash":
-				damage = 6
-			elif card_obj.id == "streak_phase_shift":
-				# Phase shift gives block to AI
-				print("[BLOCK] Adding 5 block to AI")
-				player2.stats.block += 5
-					
-			# Apply damage if this is an attack
-			if damage > 0:
-				# Apply block mechanics properly
+			# Apply modifiers using the already defined owner_modifiers
+			if owner_modifiers:
+				damage = owner_modifiers.get_modified_value(damage, Modifier.Type.DMG_DEALT)
+			
+			print("[DAMAGE] Applying ", damage, " damage to ", effect_target.name if effect_target else "unknown")
+			
+			# Apply block and damage
+			if effect_target:
 				var remaining_damage = damage
 				var block_used = 0
 				
 				# Use block to absorb damage if available
-				if player.stats.block > 0:
-					block_used = min(player.stats.block, remaining_damage)
-					player.stats.block -= block_used
+				if effect_target.stats.block > 0:
+					block_used = min(effect_target.stats.block, remaining_damage)
+					effect_target.stats.block -= block_used
 					remaining_damage -= block_used
-					print("[BLOCK] Player used ", block_used, " block to absorb damage")
+					print("[BLOCK] ", effect_target.name, " used ", block_used, " block to absorb damage")
 				
-				# Only apply remaining damage to health
+				# Apply remaining damage to health
 				if remaining_damage > 0:
-					player.stats.health -= remaining_damage
-					print("[DAMAGE] Applied ", remaining_damage, " damage to Player health")
-				print("[HEALTH] Player health now: ", player.stats.health, " (Block: ", player.stats.block, ")")
-				
-			# After effect stats
-			print("[PVP_STATS] After effect - Player HP: ", player.stats.health, ", block: ", player.stats.block)
-			print("[PVP_STATS] After effect - AI HP: ", player2.stats.health, ", block: ", player2.stats.block)
+					effect_target.stats.health -= remaining_damage
+					print("[DAMAGE] Applied ", remaining_damage, " damage to ", effect_target.name, " health")
+				print("[HEALTH] ", effect_target.name, " now: ", effect_target.stats.health, " (Block: ", effect_target.stats.block, ")")
+		
+		# Process block cards - use the card's base_block property directly
+		if "base_block" in card_obj and card_obj.base_block > 0:
+			var block_amount = card_obj.base_block
+			print("[DYNAMIC BLOCK] Card has block value: ", block_amount)
 			
-			# Print stats after effect
-			if target_nodes.size() > 0 and target_nodes[0] is Player:
-				var target_player = target_nodes[0] as Player
-				print("[PVP_STATS] After effect - target HP: ", target_player.stats.health, ", block: ", target_player.stats.block)
+			# Block doesn't have modifiers in the current system
+			# Using direct block value from the card
+			
+			# Apply block to the card owner - since block cards are self-targeting
+			var block_target = effect_source
+			if block_target:
+				block_target.stats.block += block_amount
+				print("[BLOCK] Adding ", block_amount, " block to ", block_target.name, " (from card's base_block property)")
+		
+		# Process card draw effects
+		if card_obj.id == "streak_quick_strike":
+			print("[CARD DRAW] Quick Strike adds 1 card draw")
+			if not is_player_card:
+				# AI draws a card
+				print("[PH] Drawing 1 cards for AI")
+				# No actual AI draw implementation here, it's handled in AI logic
+		
+		# After effect stats - correctly indented outside the card-specific if block
+		print("[PVP_STATS] After effect - Player HP: ", player.stats.health, ", block: ", player.stats.block)
+		print("[PVP_STATS] After effect - AI HP: ", player2.stats.health, ", block: ", player2.stats.block)
+		
+		# Print stats after effect
+		if target_nodes.size() > 0 and target_nodes[0] is Player:
+			var effect_target_node = target_nodes[0] as Player
+			print("[PVP_STATS] After effect - target HP: ", effect_target_node.stats.health, ", block: ", effect_target_node.stats.block)
 		# REMOVED - merged into unified card execution flow above
 
 		# Move the card to the appropriate discard pile
