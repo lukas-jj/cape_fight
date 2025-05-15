@@ -36,7 +36,10 @@ func start_battle(char_stats: CharacterStats) -> void:
 
 
 func start_turn() -> void:
-	character.block = 0
+	# TEMPORARILY DISABLED: Block reset at start of turn for testing
+	# character.block = 0
+	print("[BLOCK DEBUG] PlayerHandler - Block reset DISABLED, keeping block: " + str(character.block))
+	
 	character.reset_mana()
 	relics.activate_relics_by_type(Relic.Type.START_OF_TURN)
 
@@ -63,6 +66,26 @@ func draw_card() -> void:
 		
 	# If no hand assigned (e.g., AI disabled), skip UI add but keep card removed from draw pile
 	reshuffle_deck_from_discard()
+	
+
+# Add a single card directly to the hand - useful for debugging and manual card creation
+func add_card_to_hand(card: Card) -> void:
+	if not hand:
+		print("[PH] ERROR: Cannot add card to hand - no hand reference")
+		return
+		
+	if not card:
+		print("[PH] ERROR: Cannot add null card to hand")
+		return
+		
+	if hand.get_child_count() >= character.cards_per_turn:
+		print("[PH] Warning: Cannot add more cards - hand full")
+		return
+		
+	# This is the same logic as in hand.add_card but with additional debug info
+	print("[PH] Manually adding card " + card.id + " to hand")
+	hand.add_card(card)
+	print("[PH] Card added with cost: " + str(card.cost) + ", hand now has: " + str(hand.get_child_count()) + " cards")
 
 
 func draw_cards(amount: int, is_start_of_turn_draw: bool = false) -> void:

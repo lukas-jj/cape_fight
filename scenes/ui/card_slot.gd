@@ -5,6 +5,8 @@ extends Panel
 
 # Emitted whenever the slot's card changes (added, swapped, or cleared)
 signal card_changed(card_ui: CardUI)
+# Emitted before accepting a card to allow energy validation
+signal pre_card_accept(card_ui: CardUI, slot: CardSlot)
 
 var card_ui: CardUI = null
 
@@ -28,11 +30,22 @@ func _debug_card_name(cardui: CardUI) -> String:
 		return c.resource_name
 	return c.resource_path.get_file()
 
-func accept_card(card: CardUI) -> void:
+func accept_card(card: CardUI) -> bool:
 	if card == null:
-		return
+		return false
 	var incoming_card_name := _debug_card_name(card)
 	print("[CardSlot] slot %d ACCEPT() PARAM → %s (CardUI id: %d)" % [get_index(), incoming_card_name, card.get_instance_id()])
+	
+	# Signal for energy validation before accepting the card
+	# Allows battle system to check if player has enough energy for this card
+	emit_signal("pre_card_accept", card, self)
+	
+	# If the card has a "blocked" flag set by energy validation, don't accept it
+	if card.get_meta("energy_blocked", false):
+		print("[ENERGY] Card blocked due to insufficient energy: " + incoming_card_name)
+		# Remove the meta flag after checking
+		card.remove_meta("energy_blocked")
+		return false
 	
 	var incoming_prev_parent := card.get_parent()
 	var outgoing: CardUI = card_ui  # May be null if slot was empty
@@ -56,7 +69,7 @@ func accept_card(card: CardUI) -> void:
 	print("[CardSlot] slot %d AFTER PLACE → %s (CardUI id: %d)" % [get_index(), _debug_card_name(card_ui), card_id])
 
 	# === Handle the outgoing card if there was one ===
-	if outgoing and outgoing != card:
+	if is_instance_valid(outgoing) and outgoing != card:
 		var dest_parent: Control = null
 		# If we dragged from another CardSlot, swap the cards
 		if incoming_prev_parent is CardSlot:
@@ -91,7 +104,8 @@ func accept_card(card: CardUI) -> void:
 			var out_name := _debug_card_name(outgoing)
 			print("[CardSlot] slot %d RETURN → %s" % [get_index(), out_name])
 
-		# Outgoing card's slot (if any) already emitted its signal above, no need for extra emit.
+	# Return true to indicate the card was successfully accepted
+	return true
 
 func clear() -> void:
 	if card_ui and is_instance_valid(card_ui):
